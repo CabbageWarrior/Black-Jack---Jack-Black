@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 using DG.Tweening;
+using System;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Card : MonoBehaviour
@@ -43,6 +46,41 @@ public class Card : MonoBehaviour
     /// SpriteRenderer reference used for setting the correct Sprite.
     /// </summary>
     private SpriteRenderer spriteRenderer;
+    /// <summary>
+    /// Rigidbody reference used for velocity.
+    /// </summary>
+    private Rigidbody cardRigidbody;
+    /// <summary>
+    /// Used to know if the card is draggable.
+    /// </summary>
+    private bool isDraggable = false;
+    /// <summary>
+    /// Is this card draggable?
+    /// </summary>
+    public bool IsDraggable
+    {
+        get
+        {
+            return isDraggable;
+        }
+
+        set
+        {
+            isDraggable = value;
+        }
+    }
+    /// <summary>
+    /// Used to know if the card is being dragged.
+    /// </summary>
+    private bool isDragging = false;
+
+    public bool IsDragging
+    {
+        get
+        {
+            return isDragging;
+        }
+    }
 
     /// <summary>
     /// Used to know if the card has been used.
@@ -58,6 +96,8 @@ public class Card : MonoBehaviour
             return isUsed;
         }
     }
+
+    private Coroutine flightCoroutine;
     #endregion
     #endregion
 
@@ -68,8 +108,9 @@ public class Card : MonoBehaviour
     /// </summary>
     private void Awake()
     {
-        // Initializes the SpriteRenderer reference.
+        // Initializes the SpriteRenderer and Rigidbody references.
         spriteRenderer = GetComponent<SpriteRenderer>();
+        cardRigidbody = GetComponent<Rigidbody>();
     }
 
     /// <summary>
@@ -79,6 +120,20 @@ public class Card : MonoBehaviour
     {
         // Sets the correct face's Sprite based on the Card Index.
         SetCardFace();
+    }
+
+    /// <summary>
+    /// Component Update method.
+    /// </summary>
+    private void Update()
+    {
+        if (!isUsed && GameManager.instance != null && GameManager.instance.DataManager != null && GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
+        {
+            if (isDragging && Input.GetMouseButtonUp(0))
+            {
+                DragStop();
+            }
+        }
     }
     #endregion
 
@@ -109,11 +164,19 @@ public class Card : MonoBehaviour
             float startingPositionY = transform.localPosition.y;
 
             Sequence mySequence = DOTween.Sequence();
-            mySequence
-                .Append(transform.DOLocalMoveY(startingPositionY + .1f, toggleDuration / 2f))
-                .AppendInterval(toggleDuration / 2f)
-                .Append(transform.DOLocalMoveY(startingPositionY, toggleDuration / 2f))
-                .Insert(0, transform.DOLocalRotateQuaternion(newAngle, mySequence.Duration()));
+            if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.SingleClick)
+            {
+                mySequence
+                    .Append(transform.DOLocalMoveY(startingPositionY + .1f, toggleDuration / 2f))
+                    .AppendInterval(toggleDuration / 2f)
+                    .Append(transform.DOLocalMoveY(startingPositionY, toggleDuration / 2f))
+                    .Insert(0, transform.DOLocalRotateQuaternion(newAngle, mySequence.Duration()));
+            }
+            else
+            {
+                mySequence
+                    .Append(transform.DOLocalRotateQuaternion(newAngle, toggleDuration));
+            }
         }
         else
         {
@@ -127,6 +190,12 @@ public class Card : MonoBehaviour
     public void Use()
     {
         isUsed = true;
+        isDraggable = false;
+        FreezePosition();
+        if (flightCoroutine != null)
+        {
+            StopCoroutine(flightCoroutine);
+        }
         if (OnUsed != null) OnUsed();
     }
 
@@ -135,8 +204,55 @@ public class Card : MonoBehaviour
     /// </summary>
     public void ResetState()
     {
+        tag = "Card";
+        FreezePosition();
         isUsed = false;
+        isDraggable = false;
+        isDragging = false;
         Toggle(false);
+    }
+    public void FreezePosition()
+    {
+        cardRigidbody.velocity = Vector3.zero;
+        cardRigidbody.angularVelocity = Vector3.zero;
+    }
+
+    public void DragStart()
+    {
+        if (isDraggable && !isDragging)
+        {
+            StartCoroutine(DragMovement_Coroutine());
+        }
+    }
+    public void DragStop()
+    {
+        isDragging = false;
+        //tag = "Card";
+        if (GameManager.currentState == GameManager.TurnState.Game) GameManager.StaticDeckRef.deckHighlighter.SetActive(true);
+        GameManager.StaticDeckRef.SetManagingCards(false);
+    }
+
+    public void ClickEvent()
+    {
+        if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
+        {
+            if (!isUsed)
+            {
+                DragStart();
+            }
+        }
+    }
+
+    public void ReturnIntoDeck()
+    {
+        ResetState();
+        transform.DOMove(GameManager.StaticDeckRef.ReaddCardPosition(), .3f).OnComplete(ReturnIntoDeck_Callback);
+    }
+    private void ReturnIntoDeck_Callback()
+    {
+        GameManager.StaticDeckRef.AddCard(this);
+        GameManager.StaticDeckRef.SetCardsPositionByOrder();
+        GameManager.StaticDeckRef.ResetFirstCard();
     }
     #endregion
 
@@ -147,6 +263,61 @@ public class Card : MonoBehaviour
     private void SetCardFace()
     {
         spriteRenderer.sprite = faces[cardIndex];
+    }
+
+    private IEnumerator DragMovement_Coroutine()
+    {
+        if (flightCoroutine != null)
+        {
+            StopCoroutine(flightCoroutine);
+        }
+
+        isDragging = true;
+        tag = "ValidCard";
+
+        FreezePosition();
+
+        Ray rayFromCamera;
+        RaycastHit hitFromCamera;
+
+        int layer9 = 1 << 9;
+
+        Vector3 prevPosition = transform.position, actualPosition = transform.position;
+
+        while (isDragging)
+        {
+            rayFromCamera = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            Debug.DrawRay(rayFromCamera.origin, rayFromCamera.direction * 10, Color.red);
+
+            if (Physics.Raycast(rayFromCamera, out hitFromCamera, 100, layer9))
+            {
+                prevPosition = actualPosition;
+
+                transform.position = hitFromCamera.point;
+                actualPosition = transform.position;
+            }
+            yield return null;
+        }
+
+        // Adding velocity
+        Vector3 lastFrameVector = actualPosition - prevPosition;
+        cardRigidbody.AddForce(lastFrameVector * 10, ForceMode.Impulse);
+
+        if (flightCoroutine != null)
+        {
+            StopCoroutine(flightCoroutine);
+        }
+        flightCoroutine = StartCoroutine(CardReturnCountdown_Coroutine());
+
+        yield return null;
+    }
+
+    private IEnumerator CardReturnCountdown_Coroutine()
+    {
+        yield return new WaitForSeconds(3f);
+
+        ReturnIntoDeck();
     }
     #endregion
     #endregion

@@ -21,10 +21,10 @@ public class ConfigurationManager : MonoBehaviour
     /// Slider reference to the amountof AI players.
     /// </summary>
     public Slider playersAINumberSlider;
-    ///// <summary>
-    ///// Dropdown reference to the card sending method.
-    ///// </summary>
-    //public Dropdown cardSendingMethodDropdown;
+    /// <summary>
+    /// Dropdown reference to the card sending method.
+    /// </summary>
+    public Dropdown cardSendingMethodDropdown;
 
     /// <summary>
     /// Reference to all the PlayerAIConfigurators.
@@ -97,9 +97,11 @@ public class ConfigurationManager : MonoBehaviour
     /// </summary>
     public void ConfigPhaseAI()
     {
+        dataManager.ClearPlayersToInit();
+
         dataManager.DealerName = ("" + dealerNameInput.text != "" ? dealerNameInput.text : "Missingno");
-        //dataManager.CardSendingMode = (DataManager.CardSendingType)cardSendingMethodDropdown.value;
-        dataManager.CardSendingMode = DataManager.CardSendingType.SingleClick;
+        dataManager.CardSendingMode = (DataManager.CardSendingType)cardSendingMethodDropdown.value;
+        //dataManager.CardSendingMode = DataManager.CardSendingType.SingleClick;
 
         // Resets informations in players' configurators and activates only the amount required in Phase 1.
         for (int i = 0; i < configurators.Length; i++)

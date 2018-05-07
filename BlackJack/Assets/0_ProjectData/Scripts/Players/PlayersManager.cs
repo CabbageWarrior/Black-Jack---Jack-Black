@@ -93,13 +93,13 @@ public class PlayersManager : MonoBehaviour
             currentPlayerAI.playerName = data.Name;
             currentPlayerAI.percentageOfRisk = data.RiskPercentage;
             currentPlayerAI.minValueForRiskCalculation = data.RiskCalcMinValue;
-            
+
             // Visual update.
             currentPlayerAI.nameText.text = currentPlayerAI.playerName;
 
             AIPlayers.Add(currentPlayerAI);
         }
-        
+
         // The name of the dealer is updated with the name set in DataManager.
         playerDealer.playerName = gameManager.DataManager.DealerName;
         // Visual update.
@@ -152,10 +152,21 @@ public class PlayersManager : MonoBehaviour
         }
         yield return StartCoroutine(playerDealer.ResetInfos());
 
-        // Reset first player
-        currentPlayerIndex = 0;
-        currentPlayer = AIPlayers[currentPlayerIndex];
-        currentPlayer.StartTurn();
+        if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.SingleClick)
+        {
+            // Reset first player
+            currentPlayerIndex = 0;
+            currentPlayer = AIPlayers[currentPlayerIndex];
+            currentPlayer.StartTurn();
+        }
+        else if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
+        {
+            currentPlayer = null;
+            foreach (PlayerAI playerAI in AIPlayers)
+            {
+                playerAI.StartTurn();
+            }
+        }
 
         // Activate the Game phase.
         gameManager.SetStateGame();
@@ -184,17 +195,27 @@ public class PlayersManager : MonoBehaviour
     /// </summary>
     private void MoveToNextPlayer()
     {
-        currentPlayerIndex++;
-        if (currentPlayerIndex < AIPlayers.Count)
+        if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.SingleClick)
         {
-            currentPlayer = AIPlayers[currentPlayerIndex];
-        }
-        else
-        {
-            currentPlayer = playerDealer;
-        }
+            currentPlayerIndex++;
+            if (currentPlayerIndex < AIPlayers.Count)
+            {
+                currentPlayer = AIPlayers[currentPlayerIndex];
+            }
+            else
+            {
+                currentPlayer = playerDealer;
+            }
 
-        currentPlayer.StartTurn();
+            currentPlayer.StartTurn();
+        }
+        else if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
+        {
+            if (AIPlayers.Find(x => x.CurrentState == Player.State.WaitingForCard) == null)
+            {
+                playerDealer.StartTurn();
+            }
+        }
     }
     #endregion
     #endregion

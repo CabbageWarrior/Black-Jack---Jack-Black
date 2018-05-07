@@ -7,6 +7,12 @@ using DG.Tweening;
 
 public class Player : MonoBehaviour
 {
+    public enum State
+    {
+        WaitingForCard,
+        Done
+    }
+
     #region Delegate Types
     /// <summary>
     /// OnFinish Delegate Type.
@@ -83,6 +89,15 @@ public class Player : MonoBehaviour
             return isBusted;
         }
     }
+
+    protected State currentState = State.WaitingForCard;
+    public State CurrentState
+    {
+        get
+        {
+            return currentState;
+        }
+    }
     #endregion
     #endregion
 
@@ -119,6 +134,7 @@ public class Player : MonoBehaviour
         currentScore = 0;
         isBusted = false;
         isBlackJack = false;
+        currentState = State.WaitingForCard;
 
         // Sends back the cards.
         yield return StartCoroutine(GameManager.StaticDeckRef.ReaddCards_Coroutine(currentCards));
@@ -145,6 +161,8 @@ public class Player : MonoBehaviour
     {
         // The card is added to the current cards list.
         currentCards.Add(card);
+        // Set the card as Used.
+        card.Use();
 
         // Recalculating the score...
         int newScore = 0;
@@ -156,13 +174,12 @@ public class Player : MonoBehaviour
         // Setting special situations...
         if (newScore == GameManager.BlackJackPoints && currentCards.Count < 3)
         {
-            currentSituationText.text = "JACK BLACK!";
             isBlackJack = true;
         }
         else if (newScore > GameManager.BlackJackPoints)
         {
             currentSituationText.text = "Soft";
-            
+
             // If there are cards with a secondary value different from the first, check if the player doesn't bust using that.
             // The system checks the secondary value one card ad a time, in order to avoid wrong behaviours in case di multiple aces.
             for (int i = 0; newScore > GameManager.BlackJackPoints && i < currentCards.Count; i++)
@@ -202,7 +219,14 @@ public class Player : MonoBehaviour
     /// </summary>
     public virtual void Stop()
     {
-        currentSituationText.text = "Stop.";
+        if (isBlackJack)
+        {
+            currentSituationText.text = "JACK BLACK!";
+        }
+        else
+        {
+            currentSituationText.text = "Stop.";
+        }
 
         Finish();
     }
@@ -234,6 +258,8 @@ public class Player : MonoBehaviour
     /// </summary>
     protected virtual void Finish()
     {
+        currentState = State.Done;
+
         if (OnFinishTurn != null) OnFinishTurn.Invoke();
 
         if (OnFinish != null) OnFinish();

@@ -34,7 +34,7 @@ public class Deck : MonoBehaviour
     /// <summary>
     /// List of all the cards.
     /// </summary>
-    private List<Card> cards;
+    private List<Card> allCards;
     /// <summary>
     /// List of all the cards currentlyin the deck.
     /// </summary>
@@ -91,34 +91,37 @@ public class Deck : MonoBehaviour
 
         // For each card, the shuffle method swaps it with another random card that is part of the deck.
         int n = cardsInDeck.Count;
-        while (n > 1)
+        if (n > 0)
         {
-            n--;
+            while (n > 1)
+            {
+                n--;
 
-            // Make a "shuffle visual effect" moving cards on axis X and Z.
-            Sequence mySequenceX = DOTween.Sequence();
-            Sequence mySequenceZ = DOTween.Sequence();
-            mySequenceX
-                .Append(cardsInDeck[n].transform.DOMoveX(transform.position.x + Random.Range(-.2f, .2f), .2f))
-                .Append(cardsInDeck[n].transform.DOMoveX(transform.position.x, .2f));
-            mySequenceZ
-                .Append(cardsInDeck[n].transform.DOMoveZ(transform.position.z + Random.Range(-.2f, .2f), .2f))
-                .Append(cardsInDeck[n].transform.DOMoveZ(transform.position.z, .2f));
+                // Make a "shuffle visual effect" moving cards on axis X and Z.
+                Sequence mySequenceX = DOTween.Sequence();
+                Sequence mySequenceZ = DOTween.Sequence();
+                mySequenceX
+                    .Append(cardsInDeck[n].transform.DOMoveX(transform.position.x + Random.Range(-.2f, .2f), .2f))
+                    .Append(cardsInDeck[n].transform.DOMoveX(transform.position.x, .2f));
+                mySequenceZ
+                    .Append(cardsInDeck[n].transform.DOMoveZ(transform.position.z + Random.Range(-.2f, .2f), .2f))
+                    .Append(cardsInDeck[n].transform.DOMoveZ(transform.position.z, .2f));
 
-            // Selecting the random index with which make the swap.
-            int k = Random.Range(0, cardsInDeck.Count);
+                // Selecting the random index with which make the swap.
+                int k = Random.Range(0, cardsInDeck.Count);
 
-            // Swapping cards.
-            Card temp = cardsInDeck[k];
-            cardsInDeck[k] = cardsInDeck[n];
-            cardsInDeck[n] = temp;
+                // Swapping cards.
+                Card temp = cardsInDeck[k];
+                cardsInDeck[k] = cardsInDeck[n];
+                cardsInDeck[n] = temp;
+            }
+
+            // Reorder the Y positions.
+            SetCardsPositionByOrder();
+
+            // Reset the first card reference after the shuffle.
+            ResetFirstCard();
         }
-
-        // Reorder the Y positions.
-        SetCardsPositionByOrder();
-
-        // Reset the first card reference after the shuffle.
-        ResetFirstCard();
 
         if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
         SetManagingCards(false);
@@ -135,7 +138,7 @@ public class Deck : MonoBehaviour
         {
             cardsInDeck[i].transform.position = new Vector3(
                 transform.position.x,
-                transform.position.y - cardOffset * (i + cards.Count - cardsInDeck.Count),
+                transform.position.y - cardOffset * (i + allCards.Count - cardsInDeck.Count),
                 transform.position.z
             );
         }
@@ -154,16 +157,11 @@ public class Deck : MonoBehaviour
         if (cards != null && cards.Count > 0)
         {
             SetManagingCards(true);
-
-            Vector3 deckInitialPosition = transform.position;
-            Vector3 newPositionPoint = deckInitialPosition + new Vector3(0f, cardOffset * cards.Count, 0f);
-
+            
             // For each card, reset its state and reinsert it into the deck.
             foreach (Card card in cards)
             {
-                card.ResetState();
-                card.transform.DOMove(newPositionPoint, .1f);
-                cardsInDeck.Add(card);
+                card.ReturnIntoDeck();
 
                 yield return new WaitForSeconds(.05f);
             }
@@ -174,6 +172,71 @@ public class Deck : MonoBehaviour
         }
 
         yield return null;
+    }
+
+    /// <summary>
+    /// Changes the card management state.
+    /// </summary>
+    /// <param name="isManaging">True if the deck is starting the management, False otherwise.</param>
+    public void SetManagingCards(bool isManaging)
+    {
+        if (isManaging)
+        {
+            isManagingCards = true;
+            if (OnManagingCardsStart != null) OnManagingCardsStart.Invoke();
+        }
+        else
+        {
+            isManagingCards = false;
+            if (OnManagingCardsEnd != null) OnManagingCardsEnd.Invoke();
+        }
+    }
+
+    public void AddCard(Card card)
+    {
+        cardsInDeck.Add(card);
+        
+        // Reset Y order.
+        SetCardsPositionByOrder();
+
+        // Reset the first card reference.
+        ResetFirstCard();
+    }
+    public Vector3 ReaddCardPosition()
+    {
+        Vector3 deckInitialPosition = transform.position;
+        Vector3 newPositionPoint = deckInitialPosition + new Vector3(0f, cardOffset * (cardsInDeck.Count + 1), 0f);
+
+        return newPositionPoint;
+    }
+
+    public void ClickEvent()
+    {
+        switch (GameManager.instance.DataManager.CardSendingMode)
+        {
+            case DataManager.CardSendingType.SingleClick:
+                OnMouseUpAsButton_Event();
+                break;
+
+            case DataManager.CardSendingType.DragAndDrop:
+                OnMouseDown_Event();
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Overwrites the first card reference with the current first card of the deck.
+    /// </summary>
+    public void ResetFirstCard()
+    {
+        if (cardsInDeck.Count > 0)
+        {
+            firstCard = cardsInDeck[0];
+        }
+        else
+        {
+            firstCard = null;
+        }
     }
     #endregion
 
@@ -186,13 +249,13 @@ public class Deck : MonoBehaviour
         SetManagingCards(true);
 
         // Cards List initialization.
-        if (cards == null)
+        if (allCards == null)
         {
-            cards = new List<Card>();
+            allCards = new List<Card>();
         }
         else
         {
-            cards.Clear();
+            allCards.Clear();
         }
 
         // Cards go from 2 to 11/1.
@@ -202,6 +265,9 @@ public class Deck : MonoBehaviour
 
             Card newCard = newCardGO.GetComponent<Card>();
             newCard.cardIndex = i;
+
+            // Initialize the callback.
+            newCard.OnUsed += ResetFirstCard;
 
             // Check the index for the single suit.
             int suitIndex = i % 13;
@@ -222,16 +288,15 @@ public class Deck : MonoBehaviour
                 newCard.cardSecondaryScoreValue = 1;
             }
 
-            // Hide the face and initialize the callback
+            // Hide the face.
             newCard.Toggle(false, false);
-            newCard.OnUsed += ResetFirstCard;
 
             // Add the new card to the list.
-            cards.Add(newCard);
+            allCards.Add(newCard);
         }
 
         // Set the list of cards in deck equal to the whole cards list.
-        cardsInDeck = cards;
+        cardsInDeck = allCards;
 
         // Reset Y order.
         SetCardsPositionByOrder();
@@ -243,36 +308,21 @@ public class Deck : MonoBehaviour
     }
 
     /// <summary>
-    /// Overwrites the first card reference with the current first card of the deck.
+    /// Click event.
     /// </summary>
-    private void ResetFirstCard()
+    private void OnMouseUpAsButton_Event()
     {
-        firstCard = cardsInDeck[0];
-    }
+        if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
+        if (cardsInDeck.Count <= 0) return;
 
-    /// <summary>
-    /// Changes the card management state.
-    /// </summary>
-    /// <param name="isManaging">True if the deck is starting the management, False otherwise.</param>
-    private void SetManagingCards(bool isManaging)
-    {
-        if (isManaging)
-        {
-            isManagingCards = true;
-            if (OnManagingCardsStart != null) OnManagingCardsStart.Invoke();
-        }
-        else
-        {
-            isManagingCards = false;
-            if (OnManagingCardsEnd != null) OnManagingCardsEnd.Invoke();
-        }
+        // If the operation hasn't been blocked, start the real objects management.
+        StartCoroutine(OnMouseUpAsButton_Coroutine());
     }
-
     /// <summary>
-    /// Manages the Click event actions.
+    /// Manages the OnMouseUpAsButton event actions.
     /// </summary>
     /// <returns>IEnumerator value.</returns>
-    private IEnumerator DeckClicked_Coroutine()
+    private IEnumerator OnMouseUpAsButton_Coroutine()
     {
         SetManagingCards(true);
         deckHighlighter.SetActive(false);
@@ -283,9 +333,8 @@ public class Deck : MonoBehaviour
         yield return new WaitForSeconds(1);
 
         // The current player gets the first card, that is removed from the deck and marked as "Used".
-        PlayersManager.currentPlayer.GetCard(firstCard);
         cardsInDeck.Remove(firstCard);
-        firstCard.Use();
+        PlayersManager.currentPlayer.GetCard(firstCard);
 
         yield return null;
 
@@ -293,20 +342,30 @@ public class Deck : MonoBehaviour
         SetManagingCards(false);
         yield return null;
     }
-    #endregion
-    #endregion
 
-    #region Interaction Events
     /// <summary>
-    /// Click event.
+    /// MouseDown event.
     /// </summary>
-    private void OnMouseUpAsButton()
+    private void OnMouseDown_Event()
     {
         if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
         if (cardsInDeck.Count <= 0) return;
 
-        // If the operation hasn't been blocked, start the real objects management.
-        StartCoroutine(DeckClicked_Coroutine());
+        if (firstCard != null)
+        {
+            // If the operation hasn't been blocked, start the real objects management.
+            SetManagingCards(true);
+            deckHighlighter.SetActive(false);
+
+            // Toggles the first card, that is removed from the deck and dragged.
+            firstCard.Toggle(true);
+            firstCard.IsDraggable = true;
+            firstCard.DragStart();
+            cardsInDeck.Remove(firstCard);
+
+            ResetFirstCard();
+        }
     }
+    #endregion
     #endregion
 }

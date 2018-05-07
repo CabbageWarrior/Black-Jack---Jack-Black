@@ -26,6 +26,10 @@ public class GameManager : MonoBehaviour
 
     #region Statics
     /// <summary>
+    /// Singleton instance of GameManager.
+    /// </summary>
+    public static GameManager instance = null;
+    /// <summary>
     /// Current state of the match.
     /// </summary>
     public static TurnState currentState = TurnState.End;
@@ -99,6 +103,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     void Awake()
     {
+        //GameObject instance Singleton initialization.
+        if (instance == null) instance = this;
+        else if (instance != this) Destroy(gameObject);
+
         // Initializing the reference to the PlayersManager component.
         playersManager = GetComponent<PlayersManager>();
 
