@@ -3,9 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
+using System.Linq;
 
 public class Deck : MonoBehaviour
 {
+    #region Enums
+    public enum Suit
+    {
+        Hearts = 0,
+        Diamonds = 1,
+        Clubs = 2,
+        Spades = 3
+    }
+    #endregion
+
     #region Properties
     #region Public
     /// <summary>
@@ -16,6 +27,28 @@ public class Deck : MonoBehaviour
     /// Offset amount for cards in deck.
     /// </summary>
     public float cardOffset = 0f;
+
+    /// <summary>
+    /// Heatrs position when reordering.
+    /// </summary>
+    [Space]
+    [Range(1, 4)]
+    public int heartsSortPosition = 1;
+    /// <summary>
+    /// Diamonds position when reordering.
+    /// </summary>
+    [Range(1, 4)]
+    public int diamondsSortPosition = 2;
+    /// <summary>
+    /// Clubs position when reordering.
+    /// </summary>
+    [Range(1, 4)]
+    public int clubsSortPosition = 3;
+    /// <summary>
+    /// Spades position when reordering.
+    /// </summary>
+    [Range(1, 4)]
+    public int spadesSortPosition = 4;
 
     /// <summary>
     /// GameObject that highlights the deck when it can be clicked.
@@ -44,6 +77,11 @@ public class Deck : MonoBehaviour
     /// Is the deck managing cards right now?
     /// </summary>
     private bool isManagingCards = false;
+
+    /// <summary>
+    /// Sort order of suits when reorganizing cards.
+    /// </summary>
+    private List<Deck.Suit> suitOrder = new List<Suit>();
     #endregion
     #endregion
 
@@ -65,6 +103,61 @@ public class Deck : MonoBehaviour
     /// </summary>
     private void Start()
     {
+        // Initializing the sorting order.
+
+        bool heartsSortManaged = false;
+        bool diamondsSortManaged = false;
+        bool clubsSortManaged = false;
+        bool spadesSortManaged = false;
+
+        while (!(heartsSortManaged && diamondsSortManaged && clubsSortManaged && spadesSortManaged))
+        {
+            int tmpMinSortNumber = 5;
+            Deck.Suit tmpMinSuit = Deck.Suit.Hearts; // Only for initialization.
+
+            // Finding the current minimum sorting value.
+            if (!heartsSortManaged && heartsSortPosition < tmpMinSortNumber)
+            {
+                tmpMinSortNumber = heartsSortPosition;
+                tmpMinSuit = Deck.Suit.Hearts;
+            }
+            if (!diamondsSortManaged && diamondsSortPosition < tmpMinSortNumber)
+            {
+                tmpMinSortNumber = diamondsSortPosition;
+                tmpMinSuit = Deck.Suit.Diamonds;
+            }
+            if (!clubsSortManaged && clubsSortPosition < tmpMinSortNumber)
+            {
+                tmpMinSortNumber = clubsSortPosition;
+                tmpMinSuit = Deck.Suit.Clubs;
+            }
+            if (!spadesSortManaged && spadesSortPosition < tmpMinSortNumber)
+            {
+                tmpMinSortNumber = spadesSortPosition;
+                tmpMinSuit = Deck.Suit.Spades;
+            }
+
+            // Adding suit to the sorting list.
+            suitOrder.Add(tmpMinSuit);
+
+            // Checking which suit has been used.
+            switch (tmpMinSuit)
+            {
+                case Deck.Suit.Hearts:
+                    heartsSortManaged = true;
+                    break;
+                case Deck.Suit.Diamonds:
+                    diamondsSortManaged = true;
+                    break;
+                case Deck.Suit.Clubs:
+                    clubsSortManaged = true;
+                    break;
+                case Deck.Suit.Spades:
+                    spadesSortManaged = true;
+                    break;
+            }
+        }
+
         // Need to spawn the 52 cards.
         SpawnCards();
     }
@@ -130,6 +223,54 @@ public class Deck : MonoBehaviour
     }
 
     /// <summary>
+    /// Reorders the cards that are currently into the deck by their suit.
+    /// </summary>
+    public void ReorderCardsBySuit()
+    {
+        if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
+
+        StartCoroutine(ReorderCardsBySuit_Coroutine());
+    }
+    /// <summary>
+    /// Manages the deck sort.
+    /// </summary>
+    /// <returns>IEnumerator value.</returns>
+    private IEnumerator ReorderCardsBySuit_Coroutine()
+    {
+        SetManagingCards(true);
+        deckHighlighter.SetActive(false);
+
+        // For each card, the shuffle method swaps it with another random card that is part of the deck.
+        int n = cardsInDeck.Count;
+        if (n > 0)
+        {
+            List<Card> newDeckOrder = new List<Card>();
+            
+            List<Card> cardsInDeckWithCurrentSuit = new List<Card>();
+
+            for (int i = 0; i < suitOrder.Count; i++)
+            {
+                cardsInDeckWithCurrentSuit = cardsInDeck.FindAll(x => x.cardSuit == suitOrder[i]).OrderBy(x=>x.cardSuitIndex).ToList();
+
+                newDeckOrder.AddRange(cardsInDeckWithCurrentSuit);
+            }
+
+            cardsInDeck = newDeckOrder;
+
+            // Reorder the Y positions.
+            SetCardsPositionByOrder();
+
+            // Reset the first card reference after the shuffle.
+            ResetFirstCard();
+        }
+
+        if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
+        SetManagingCards(false);
+
+        yield return null;
+    }
+
+    /// <summary>
     /// Reorders the vertical position of every card based on their sort.
     /// </summary>
     public void SetCardsPositionByOrder()
@@ -157,7 +298,7 @@ public class Deck : MonoBehaviour
         if (cards != null && cards.Count > 0)
         {
             SetManagingCards(true);
-            
+
             // For each card, reset its state and reinsert it into the deck.
             foreach (Card card in cards)
             {
@@ -195,7 +336,7 @@ public class Deck : MonoBehaviour
     public void AddCard(Card card)
     {
         cardsInDeck.Add(card);
-        
+
         // Reset Y order.
         SetCardsPositionByOrder();
 
@@ -269,8 +410,12 @@ public class Deck : MonoBehaviour
             // Initialize the callback.
             newCard.OnUsed += ResetFirstCard;
 
+            // Check the suit of the card based on the Deck.Suit enumerator.
+            newCard.cardSuit = (Suit)Mathf.Floor(i / 13);
+
             // Check the index for the single suit.
             int suitIndex = i % 13;
+            newCard.cardSuitIndex = suitIndex;
 
             if (suitIndex < 9) // Numbers 2-10
             {

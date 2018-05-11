@@ -27,6 +27,14 @@ public class Card : MonoBehaviour
     [Space]
     public int cardIndex;
     /// <summary>
+    /// Suit of the card.
+    /// </summary>
+    public Deck.Suit cardSuit;
+    /// <summary>
+    /// Card suit index.
+    /// </summary>
+    public int cardSuitIndex;
+    /// <summary>
     /// Primary score value of the card.
     /// </summary>
     public int cardPrimaryScoreValue = 0;
