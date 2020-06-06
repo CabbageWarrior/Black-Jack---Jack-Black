@@ -1,126 +1,357 @@
 fileFormatVersion: 2
 guid: d79796fa44a3fd346a06d393bfee99ca
-timeCreated: 1525046066
-licenseType: Free
 TextureImporter:
-  fileIDToRecycleName:
-    21300000: videopoker_cards_JB_0
-    21300002: videopoker_cards_JB_1
-    21300004: videopoker_cards_JB_2
-    21300006: videopoker_cards_JB_3
-    21300008: videopoker_cards_JB_4
-    21300010: videopoker_cards_JB_5
-    21300012: videopoker_cards_JB_6
-    21300014: videopoker_cards_JB_7
-    21300016: videopoker_cards_JB_8
-    21300018: videopoker_cards_JB_9
-    21300020: videopoker_cards_JB_10
-    21300022: videopoker_cards_JB_11
-    21300024: videopoker_cards_JB_12
-    21300026: videopoker_cards_JB_13
-    21300028: videopoker_cards_JB_14
-    21300030: videopoker_cards_JB_15
-    21300032: videopoker_cards_JB_16
-    21300034: videopoker_cards_JB_17
-    21300036: videopoker_cards_JB_18
-    21300038: videopoker_cards_JB_19
-    21300040: videopoker_cards_JB_20
-    21300042: videopoker_cards_JB_21
-    21300044: videopoker_cards_JB_22
-    21300046: videopoker_cards_JB_23
-    21300048: videopoker_cards_JB_24
-    21300050: videopoker_cards_JB_25
-    21300052: videopoker_cards_JB_26
-    21300054: videopoker_cards_JB_27
-    21300056: videopoker_cards_JB_28
-    21300058: videopoker_cards_JB_29
-    21300060: videopoker_cards_JB_30
-    21300062: videopoker_cards_JB_31
-    21300064: videopoker_cards_JB_32
-    21300066: videopoker_cards_JB_33
-    21300068: videopoker_cards_JB_34
-    21300070: videopoker_cards_JB_35
-    21300072: videopoker_cards_JB_36
-    21300074: videopoker_cards_JB_37
-    21300076: videopoker_cards_JB_38
-    21300078: videopoker_cards_JB_39
-    21300080: videopoker_cards_JB_40
-    21300082: videopoker_cards_JB_41
-    21300084: videopoker_cards_JB_42
-    21300086: videopoker_cards_JB_43
-    21300088: videopoker_cards_JB_44
-    21300090: videopoker_cards_JB_45
-    21300092: videopoker_cards_JB_46
-    21300094: videopoker_cards_JB_47
-    21300096: videopoker_cards_JB_48
-    21300098: videopoker_cards_JB_49
-    21300100: videopoker_cards_JB_50
-    21300102: videopoker_cards_JB_51
-    21300104: videopoker_cards_JB_52
-    21300106: videopoker_cards_JB_53
-    21300108: videopoker_cards_JB_54
-    21300110: videopoker_cards_JB_55
-    21300112: videopoker_cards_JB_56
-    21300114: videopoker_cards_JB_57
-    21300116: Cards_0
-    21300118: Cards_1
-    21300120: Cards_2
-    21300122: Cards_3
-    21300124: Cards_4
-    21300126: Cards_5
-    21300128: Cards_6
-    21300130: Cards_7
-    21300132: Cards_8
-    21300134: Cards_9
-    21300136: Cards_10
-    21300138: Cards_11
-    21300140: Cards_12
-    21300142: Cards_13
-    21300144: Cards_14
-    21300146: Cards_15
-    21300148: Cards_16
-    21300150: Cards_17
-    21300152: Cards_18
-    21300154: Cards_19
-    21300156: Cards_20
-    21300158: Cards_21
-    21300160: Cards_22
-    21300162: Cards_23
-    21300164: Cards_24
-    21300166: Cards_25
-    21300168: Cards_26
-    21300170: Cards_27
-    21300172: Cards_28
-    21300174: Cards_29
-    21300176: Cards_30
-    21300178: Cards_31
-    21300180: Cards_32
-    21300182: Cards_33
-    21300184: Cards_34
-    21300186: Cards_35
-    21300188: Cards_36
-    21300190: Cards_37
-    21300192: Cards_38
-    21300194: Cards_39
-    21300196: Cards_40
-    21300198: Cards_41
-    21300200: Cards_42
-    21300202: Cards_43
-    21300204: Cards_44
-    21300206: Cards_45
-    21300208: Cards_46
-    21300210: Cards_47
-    21300212: Cards_48
-    21300214: Cards_49
-    21300216: Cards_50
-    21300218: Cards_51
-    21300220: Cards_52
-    21300222: Cards_53
-    21300224: Cards_54
-    21300226: Cards_55
-    21300228: Cards_56
-    21300230: Cards_57
-  serializedVersion: 4
+  internalIDToNameTable:
+  - first:
+      213: 21300000
+    second: videopoker_cards_JB_0
+  - first:
+      213: 21300002
+    second: videopoker_cards_JB_1
+  - first:
+      213: 21300004
+    second: videopoker_cards_JB_2
+  - first:
+      213: 21300006
+    second: videopoker_cards_JB_3
+  - first:
+      213: 21300008
+    second: videopoker_cards_JB_4
+  - first:
+      213: 21300010
+    second: videopoker_cards_JB_5
+  - first:
+      213: 21300012
+    second: videopoker_cards_JB_6
+  - first:
+      213: 21300014
+    second: videopoker_cards_JB_7
+  - first:
+      213: 21300016
+    second: videopoker_cards_JB_8
+  - first:
+      213: 21300018
+    second: videopoker_cards_JB_9
+  - first:
+      213: 21300020
+    second: videopoker_cards_JB_10
+  - first:
+      213: 21300022
+    second: videopoker_cards_JB_11
+  - first:
+      213: 21300024
+    second: videopoker_cards_JB_12
+  - first:
+      213: 21300026
+    second: videopoker_cards_JB_13
+  - first:
+      213: 21300028
+    second: videopoker_cards_JB_14
+  - first:
+      213: 21300030
+    second: videopoker_cards_JB_15
+  - first:
+      213: 21300032
+    second: videopoker_cards_JB_16
+  - first:
+      213: 21300034
+    second: videopoker_cards_JB_17
+  - first:
+      213: 21300036
+    second: videopoker_cards_JB_18
+  - first:
+      213: 21300038
+    second: videopoker_cards_JB_19
+  - first:
+      213: 21300040
+    second: videopoker_cards_JB_20
+  - first:
+      213: 21300042
+    second: videopoker_cards_JB_21
+  - first:
+      213: 21300044
+    second: videopoker_cards_JB_22
+  - first:
+      213: 21300046
+    second: videopoker_cards_JB_23
+  - first:
+      213: 21300048
+    second: videopoker_cards_JB_24
+  - first:
+      213: 21300050
+    second: videopoker_cards_JB_25
+  - first:
+      213: 21300052
+    second: videopoker_cards_JB_26
+  - first:
+      213: 21300054
+    second: videopoker_cards_JB_27
+  - first:
+      213: 21300056
+    second: videopoker_cards_JB_28
+  - first:
+      213: 21300058
+    second: videopoker_cards_JB_29
+  - first:
+      213: 21300060
+    second: videopoker_cards_JB_30
+  - first:
+      213: 21300062
+    second: videopoker_cards_JB_31
+  - first:
+      213: 21300064
+    second: videopoker_cards_JB_32
+  - first:
+      213: 21300066
+    second: videopoker_cards_JB_33
+  - first:
+      213: 21300068
+    second: videopoker_cards_JB_34
+  - first:
+      213: 21300070
+    second: videopoker_cards_JB_35
+  - first:
+      213: 21300072
+    second: videopoker_cards_JB_36
+  - first:
+      213: 21300074
+    second: videopoker_cards_JB_37
+  - first:
+      213: 21300076
+    second: videopoker_cards_JB_38
+  - first:
+      213: 21300078
+    second: videopoker_cards_JB_39
+  - first:
+      213: 21300080
+    second: videopoker_cards_JB_40
+  - first:
+      213: 21300082
+    second: videopoker_cards_JB_41
+  - first:
+      213: 21300084
+    second: videopoker_cards_JB_42
+  - first:
+      213: 21300086
+    second: videopoker_cards_JB_43
+  - first:
+      213: 21300088
+    second: videopoker_cards_JB_44
+  - first:
+      213: 21300090
+    second: videopoker_cards_JB_45
+  - first:
+      213: 21300092
+    second: videopoker_cards_JB_46
+  - first:
+      213: 21300094
+    second: videopoker_cards_JB_47
+  - first:
+      213: 21300096
+    second: videopoker_cards_JB_48
+  - first:
+      213: 21300098
+    second: videopoker_cards_JB_49
+  - first:
+      213: 21300100
+    second: videopoker_cards_JB_50
+  - first:
+      213: 21300102
+    second: videopoker_cards_JB_51
+  - first:
+      213: 21300104
+    second: videopoker_cards_JB_52
+  - first:
+      213: 21300106
+    second: videopoker_cards_JB_53
+  - first:
+      213: 21300108
+    second: videopoker_cards_JB_54
+  - first:
+      213: 21300110
+    second: videopoker_cards_JB_55
+  - first:
+      213: 21300112
+    second: videopoker_cards_JB_56
+  - first:
+      213: 21300114
+    second: videopoker_cards_JB_57
+  - first:
+      213: 21300116
+    second: Cards_0
+  - first:
+      213: 21300118
+    second: Cards_1
+  - first:
+      213: 21300120
+    second: Cards_2
+  - first:
+      213: 21300122
+    second: Cards_3
+  - first:
+      213: 21300124
+    second: Cards_4
+  - first:
+      213: 21300126
+    second: Cards_5
+  - first:
+      213: 21300128
+    second: Cards_6
+  - first:
+      213: 21300130
+    second: Cards_7
+  - first:
+      213: 21300132
+    second: Cards_8
+  - first:
+      213: 21300134
+    second: Cards_9
+  - first:
+      213: 21300136
+    second: Cards_10
+  - first:
+      213: 21300138
+    second: Cards_11
+  - first:
+      213: 21300140
+    second: Cards_12
+  - first:
+      213: 21300142
+    second: Cards_13
+  - first:
+      213: 21300144
+    second: Cards_14
+  - first:
+      213: 21300146
+    second: Cards_15
+  - first:
+      213: 21300148
+    second: Cards_16
+  - first:
+      213: 21300150
+    second: Cards_17
+  - first:
+      213: 21300152
+    second: Cards_18
+  - first:
+      213: 21300154
+    second: Cards_19
+  - first:
+      213: 21300156
+    second: Cards_20
+  - first:
+      213: 21300158
+    second: Cards_21
+  - first:
+      213: 21300160
+    second: Cards_22
+  - first:
+      213: 21300162
+    second: Cards_23
+  - first:
+      213: 21300164
+    second: Cards_24
+  - first:
+      213: 21300166
+    second: Cards_25
+  - first:
+      213: 21300168
+    second: Cards_26
+  - first:
+      213: 21300170
+    second: Cards_27
+  - first:
+      213: 21300172
+    second: Cards_28
+  - first:
+      213: 21300174
+    second: Cards_29
+  - first:
+      213: 21300176
+    second: Cards_30
+  - first:
+      213: 21300178
+    second: Cards_31
+  - first:
+      213: 21300180
+    second: Cards_32
+  - first:
+      213: 21300182
+    second: Cards_33
+  - first:
+      213: 21300184
+    second: Cards_34
+  - first:
+      213: 21300186
+    second: Cards_35
+  - first:
+      213: 21300188
+    second: Cards_36
+  - first:
+      213: 21300190
+    second: Cards_37
+  - first:
+      213: 21300192
+    second: Cards_38
+  - first:
+      213: 21300194
+    second: Cards_39
+  - first:
+      213: 21300196
+    second: Cards_40
+  - first:
+      213: 21300198
+    second: Cards_41
+  - first:
+      213: 21300200
+    second: Cards_42
+  - first:
+      213: 21300202
+    second: Cards_43
+  - first:
+      213: 21300204
+    second: Cards_44
+  - first:
+      213: 21300206
+    second: Cards_45
+  - first:
+      213: 21300208
+    second: Cards_46
+  - first:
+      213: 21300210
+    second: Cards_47
+  - first:
+      213: 21300212
+    second: Cards_48
+  - first:
+      213: 21300214
+    second: Cards_49
+  - first:
+      213: 21300216
+    second: Cards_50
+  - first:
+      213: 21300218
+    second: Cards_51
+  - first:
+      213: 21300220
+    second: Cards_52
+  - first:
+      213: 21300222
+    second: Cards_53
+  - first:
+      213: 21300224
+    second: Cards_54
+  - first:
+      213: 21300226
+    second: Cards_55
+  - first:
+      213: 21300228
+    second: Cards_56
+  - first:
+      213: 21300230
+    second: Cards_57
+  externalObjects: {}
+  serializedVersion: 11
   mipmaps:
     mipMapMode: 0
     enableMipMap: 0
@@ -138,6 +369,8 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
   isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
   grayScaleToAlpha: 0
   generateCubemap: 6
   cubemapConvolution: 0
@@ -148,7 +381,7 @@ TextureImporter:
     serializedVersion: 2
     filterMode: -1
     aniso: -1
-    mipBias: -1
+    mipBias: -100
     wrapU: 1
     wrapV: -1
     wrapW: -1
@@ -160,49 +393,68 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spritePixelsToUnits: 600
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
   textureType: 8
   textureShape: 1
+  singleChannelComponent: 0
   maxTextureSizeSet: 0
   compressionQualitySet: 0
   textureFormatSet: 0
+  applyGammaDecoding: 1
   platformSettings:
-  - buildTarget: DefaultTexturePlatform
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Standalone
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Standalone
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Android
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: Android
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: WebGL
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
+  - serializedVersion: 3
+    buildTarget: WebGL
     maxTextureSize: 2048
+    resizeAlgorithm: 0
     textureFormat: -1
     textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 1
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -220,6 +472,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 49305410000000000800000000000000
+      internalID: 21300116
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_1
       rect:
@@ -234,6 +493,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 69305410000000000800000000000000
+      internalID: 21300118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_2
       rect:
@@ -248,6 +514,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 89305410000000000800000000000000
+      internalID: 21300120
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_3
       rect:
@@ -262,6 +535,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: a9305410000000000800000000000000
+      internalID: 21300122
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_4
       rect:
@@ -276,6 +556,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: c9305410000000000800000000000000
+      internalID: 21300124
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_5
       rect:
@@ -290,6 +577,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: e9305410000000000800000000000000
+      internalID: 21300126
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_6
       rect:
@@ -304,6 +598,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 0a305410000000000800000000000000
+      internalID: 21300128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_7
       rect:
@@ -318,6 +619,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2a305410000000000800000000000000
+      internalID: 21300130
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_8
       rect:
@@ -332,6 +640,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 4a305410000000000800000000000000
+      internalID: 21300132
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_9
       rect:
@@ -346,6 +661,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 6a305410000000000800000000000000
+      internalID: 21300134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_10
       rect:
@@ -360,6 +682,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8a305410000000000800000000000000
+      internalID: 21300136
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_11
       rect:
@@ -374,6 +703,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: aa305410000000000800000000000000
+      internalID: 21300138
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_12
       rect:
@@ -388,6 +724,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ca305410000000000800000000000000
+      internalID: 21300140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_13
       rect:
@@ -402,6 +745,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ea305410000000000800000000000000
+      internalID: 21300142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_14
       rect:
@@ -416,6 +766,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 0b305410000000000800000000000000
+      internalID: 21300144
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_15
       rect:
@@ -430,6 +787,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2b305410000000000800000000000000
+      internalID: 21300146
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_16
       rect:
@@ -444,6 +808,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 4b305410000000000800000000000000
+      internalID: 21300148
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_17
       rect:
@@ -458,6 +829,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 6b305410000000000800000000000000
+      internalID: 21300150
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_18
       rect:
@@ -472,6 +850,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8b305410000000000800000000000000
+      internalID: 21300152
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_19
       rect:
@@ -486,6 +871,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ab305410000000000800000000000000
+      internalID: 21300154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_20
       rect:
@@ -500,6 +892,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: cb305410000000000800000000000000
+      internalID: 21300156
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_21
       rect:
@@ -514,6 +913,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: eb305410000000000800000000000000
+      internalID: 21300158
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_22
       rect:
@@ -528,6 +934,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 0c305410000000000800000000000000
+      internalID: 21300160
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_23
       rect:
@@ -542,6 +955,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2c305410000000000800000000000000
+      internalID: 21300162
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_24
       rect:
@@ -556,6 +976,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 4c305410000000000800000000000000
+      internalID: 21300164
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_25
       rect:
@@ -570,6 +997,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 6c305410000000000800000000000000
+      internalID: 21300166
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_26
       rect:
@@ -584,6 +1018,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8c305410000000000800000000000000
+      internalID: 21300168
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_27
       rect:
@@ -598,6 +1039,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ac305410000000000800000000000000
+      internalID: 21300170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_28
       rect:
@@ -612,6 +1060,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: cc305410000000000800000000000000
+      internalID: 21300172
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_29
       rect:
@@ -626,6 +1081,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ec305410000000000800000000000000
+      internalID: 21300174
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_30
       rect:
@@ -640,6 +1102,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 0d305410000000000800000000000000
+      internalID: 21300176
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_31
       rect:
@@ -654,6 +1123,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2d305410000000000800000000000000
+      internalID: 21300178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_32
       rect:
@@ -668,6 +1144,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 4d305410000000000800000000000000
+      internalID: 21300180
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_33
       rect:
@@ -682,6 +1165,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 6d305410000000000800000000000000
+      internalID: 21300182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_34
       rect:
@@ -696,6 +1186,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8d305410000000000800000000000000
+      internalID: 21300184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_35
       rect:
@@ -710,6 +1207,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ad305410000000000800000000000000
+      internalID: 21300186
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_36
       rect:
@@ -724,6 +1228,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: cd305410000000000800000000000000
+      internalID: 21300188
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_37
       rect:
@@ -738,6 +1249,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ed305410000000000800000000000000
+      internalID: 21300190
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_38
       rect:
@@ -752,6 +1270,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 0e305410000000000800000000000000
+      internalID: 21300192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_39
       rect:
@@ -766,6 +1291,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2e305410000000000800000000000000
+      internalID: 21300194
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_40
       rect:
@@ -780,6 +1312,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 4e305410000000000800000000000000
+      internalID: 21300196
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_41
       rect:
@@ -794,6 +1333,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 6e305410000000000800000000000000
+      internalID: 21300198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_42
       rect:
@@ -808,6 +1354,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8e305410000000000800000000000000
+      internalID: 21300200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_43
       rect:
@@ -822,6 +1375,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ae305410000000000800000000000000
+      internalID: 21300202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_44
       rect:
@@ -836,6 +1396,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ce305410000000000800000000000000
+      internalID: 21300204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_45
       rect:
@@ -850,6 +1417,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ee305410000000000800000000000000
+      internalID: 21300206
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_46
       rect:
@@ -864,6 +1438,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 0f305410000000000800000000000000
+      internalID: 21300208
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_47
       rect:
@@ -878,6 +1459,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 2f305410000000000800000000000000
+      internalID: 21300210
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_48
       rect:
@@ -892,6 +1480,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 4f305410000000000800000000000000
+      internalID: 21300212
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_49
       rect:
@@ -906,6 +1501,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 6f305410000000000800000000000000
+      internalID: 21300214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_50
       rect:
@@ -920,6 +1522,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 8f305410000000000800000000000000
+      internalID: 21300216
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_51
       rect:
@@ -934,6 +1543,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: af305410000000000800000000000000
+      internalID: 21300218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_52
       rect:
@@ -948,6 +1564,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: cf305410000000000800000000000000
+      internalID: 21300220
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_53
       rect:
@@ -962,6 +1585,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: ef305410000000000800000000000000
+      internalID: 21300222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_54
       rect:
@@ -976,6 +1606,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 00405410000000000800000000000000
+      internalID: 21300224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_55
       rect:
@@ -990,6 +1627,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 20405410000000000800000000000000
+      internalID: 21300226
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_56
       rect:
@@ -1004,6 +1648,13 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 40405410000000000800000000000000
+      internalID: 21300228
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     - serializedVersion: 2
       name: Cards_57
       rect:
@@ -1018,9 +1669,26 @@ TextureImporter:
       outline: []
       physicsShape: []
       tessellationDetail: 0
+      bones: []
+      spriteID: 60405410000000000800000000000000
+      internalID: 21300230
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
   spritePackingTag: Cards
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
