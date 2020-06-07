@@ -33,51 +33,31 @@ public class GameManager : MonoBehaviour
     /// Current state of the match.
     /// </summary>
     public static TurnState currentState = TurnState.End;
-
-    /// <summary>
-    /// Static reference to the deck.
-    /// </summary>
-    private static Deck staticDeckRef;
-    /// <summary>
-    /// Jack Black Deck.
-    /// </summary>
-    public static Deck StaticDeckRef
-    {
-        get
-        {
-            return staticDeckRef;
-        }
-    }
     #endregion
 
-    #region Properties
     #region Public
     /// <summary>
     /// Deck in scene.
     /// </summary>
-    public Deck deck;
+    public Deck deck = default;
     #endregion
 
     #region Private
     /// <summary>
     /// PlayersManager Component reference.
     /// </summary>
-    private PlayersManager playersManager;
-    /// <summary>
-    /// DataManager Component reference.
-    /// </summary>
-    private DataManager dataManager;
+    private PlayersManager playersManager = default;
+    #endregion
+
+    #region Properties
     /// <summary>
     /// DataManager getter.
     /// </summary>
-    public DataManager DataManager
-    {
-        get
-        {
-            return dataManager;
-        }
-    }
-    #endregion
+    public DataManager DataManager { get; private set; }
+    /// <summary>
+    /// Jack Black Deck.
+    /// </summary>
+    public static Deck StaticDeckRef { get; private set; }
     #endregion
 
     #region Events from Inspector
@@ -101,32 +81,39 @@ public class GameManager : MonoBehaviour
     /// <summary>
     /// Component Awake method.
     /// </summary>
-    void Awake()
+    private void Awake()
     {
-        //GameObject instance Singleton initialization.
-        if (instance == null) instance = this;
-        else if (instance != this) Destroy(gameObject);
+        // If the instance is already set and it is an object different
+        // than this, then this object is destroyed.
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
 
+        //GameObject instance Singleton initialization.
+        instance = this;
+        
         // Initializing the reference to the PlayersManager component.
         playersManager = GetComponent<PlayersManager>();
 
         // Initializing the static reference of the current Deck.
-        staticDeckRef = deck;
+        StaticDeckRef = deck;
     }
 
     /// <summary>
     /// Component Start method.
     /// </summary>
-    IEnumerator Start()
+    private IEnumerator Start()
     {
         // Waiting to find the DataManager reference. DataReference is a "DontDestroyOnLoad" object from the Menu scene.
-        while (dataManager == null)
+        while (DataManager == null)
         {
-            dataManager = GameObject.FindObjectOfType<DataManager>();
+            DataManager = GameObject.FindObjectOfType<DataManager>();
             yield return null;
         }
 
-        if (OnDataManagerLoadComplete != null) OnDataManagerLoadComplete.Invoke();
+        OnDataManagerLoadComplete?.Invoke();
         yield return null;
     }
     #endregion
@@ -154,7 +141,7 @@ public class GameManager : MonoBehaviour
     public void SetStateGame()
     {
         currentState = TurnState.Game;
-        if (OnSetStateGame != null) OnSetStateGame.Invoke();
+        OnSetStateGame?.Invoke();
     }
     /// <summary>
     /// Sets the turn's current state to End.
@@ -162,7 +149,7 @@ public class GameManager : MonoBehaviour
     public void SetStateEnd()
     {
         currentState = TurnState.End;
-        if (OnSetStateEnd != null) OnSetStateEnd.Invoke();
+        OnSetStateEnd?.Invoke();
     }
 
     /// <summary>

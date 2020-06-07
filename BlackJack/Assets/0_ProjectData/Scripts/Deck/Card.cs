@@ -1,8 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
-using System;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Card : MonoBehaviour
@@ -47,6 +45,13 @@ public class Card : MonoBehaviour
     /// What happens when the card is used.
     /// </summary>
     public OnUsedDelegate OnUsed = null;
+
+    /// <summary>
+    /// Is this card draggable?
+    /// </summary>
+    public bool IsDraggable { get; set; } = false;
+
+    public bool IsDragging { get; private set; } = false;
     #endregion
 
     #region Private
@@ -58,52 +63,11 @@ public class Card : MonoBehaviour
     /// Rigidbody reference used for velocity.
     /// </summary>
     private Rigidbody cardRigidbody;
-    /// <summary>
-    /// Used to know if the card is draggable.
-    /// </summary>
-    private bool isDraggable = false;
-    /// <summary>
-    /// Is this card draggable?
-    /// </summary>
-    public bool IsDraggable
-    {
-        get
-        {
-            return isDraggable;
-        }
 
-        set
-        {
-            isDraggable = value;
-        }
-    }
-    /// <summary>
-    /// Used to know if the card is being dragged.
-    /// </summary>
-    private bool isDragging = false;
-
-    public bool IsDragging
-    {
-        get
-        {
-            return isDragging;
-        }
-    }
-
-    /// <summary>
-    /// Used to know if the card has been used.
-    /// </summary>
-    private bool isUsed = false;
     /// <summary>
     /// Is this card already used?
     /// </summary>
-    public bool IsUsed
-    {
-        get
-        {
-            return isUsed;
-        }
-    }
+    public bool IsUsed { get; private set; } = false;
 
     private Coroutine flightCoroutine;
     #endregion
@@ -135,9 +99,9 @@ public class Card : MonoBehaviour
     /// </summary>
     private void Update()
     {
-        if (!isUsed && GameManager.instance != null && GameManager.instance.DataManager != null && GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
+        if (!IsUsed && GameManager.instance != null && GameManager.instance.DataManager != null && GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
         {
-            if (isDragging && Input.GetMouseButtonUp(0))
+            if (IsDragging && Input.GetMouseButtonUp(0))
             {
                 DragStop();
             }
@@ -197,14 +161,14 @@ public class Card : MonoBehaviour
     /// </summary>
     public void Use()
     {
-        isUsed = true;
-        isDraggable = false;
+        IsUsed = true;
+        IsDraggable = false;
         FreezePosition();
         if (flightCoroutine != null)
         {
             StopCoroutine(flightCoroutine);
         }
-        if (OnUsed != null) OnUsed();
+        OnUsed?.Invoke();
     }
 
     /// <summary>
@@ -214,9 +178,9 @@ public class Card : MonoBehaviour
     {
         tag = "Card";
         FreezePosition();
-        isUsed = false;
-        isDraggable = false;
-        isDragging = false;
+        IsUsed = false;
+        IsDraggable = false;
+        IsDragging = false;
         Toggle(false);
     }
     public void FreezePosition()
@@ -227,15 +191,14 @@ public class Card : MonoBehaviour
 
     public void DragStart()
     {
-        if (isDraggable && !isDragging)
+        if (IsDraggable && !IsDragging)
         {
             StartCoroutine(DragMovement_Coroutine());
         }
     }
     public void DragStop()
     {
-        isDragging = false;
-        //tag = "Card";
+        IsDragging = false;
         if (GameManager.currentState == GameManager.TurnState.Game) GameManager.StaticDeckRef.deckHighlighter.SetActive(true);
         GameManager.StaticDeckRef.SetManagingCards(false);
     }
@@ -244,7 +207,7 @@ public class Card : MonoBehaviour
     {
         if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
         {
-            if (!isUsed)
+            if (!IsUsed)
             {
                 DragStart();
             }
@@ -280,7 +243,7 @@ public class Card : MonoBehaviour
             StopCoroutine(flightCoroutine);
         }
 
-        isDragging = true;
+        IsDragging = true;
         tag = "ValidCard";
 
         FreezePosition();
@@ -292,7 +255,7 @@ public class Card : MonoBehaviour
 
         Vector3 prevPosition = transform.position, actualPosition = transform.position;
 
-        while (isDragging)
+        while (IsDragging)
         {
             rayFromCamera = Camera.main.ScreenPointToRay(Input.mousePosition);
 
