@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
@@ -17,23 +15,21 @@ public class InputManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            Ray rayFromCamera;
-            RaycastHit hitFromCamera;
+            Ray rayFromCamera = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            rayFromCamera = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(rayFromCamera, out hitFromCamera, 100, (int)InputLayerMask.Card))
+            if (Physics.Raycast(rayFromCamera, out RaycastHit hitFromCamera, 100, (int)InputLayerMask.Card))
             {
                 //Debug.Log("Card hit!");
 
-                if (hitFromCamera.transform.GetComponent<Card>().IsDraggable)
+                Card hitCard = hitFromCamera.transform.GetComponent<Card>();
+                if (hitCard.IsDraggable)
                 {
-                    hitFromCamera.transform.GetComponent<Card>().ClickEvent();
+                    hitCard.ClickEvent();
                     return;
                 }
             }
 
-            if (Physics.Raycast(rayFromCamera, out hitFromCamera, 100, (int)InputLayerMask.Deck))
+            if (Physics.Raycast(rayFromCamera, out _, 100, (int)InputLayerMask.Deck))
             {
                 //Debug.Log("Deck hit!");
 

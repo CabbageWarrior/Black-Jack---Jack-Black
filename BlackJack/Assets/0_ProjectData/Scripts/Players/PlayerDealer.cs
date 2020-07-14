@@ -33,8 +33,10 @@ public class PlayerDealer : Player
     protected override void SetCardPosition(Card card)
     {
         // Moves the previous cards on the X axis in order to free some space for the new card.
-        foreach (Card prevCard in currentCards)
+        Card prevCard;
+        for (int i = 0; i < currentCards.Count; i++)
         {
+            prevCard = currentCards[i];
             if (!prevCard.Equals(card))
             {
                 prevCard.transform.DOMoveX(prevCard.transform.position.x - .07f, .2f);

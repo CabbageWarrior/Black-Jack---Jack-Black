@@ -85,10 +85,15 @@ public class PlayersManager : MonoBehaviour
         }
 
         // For each data in DataManager, the system creates an AI Player with the correct settings. The new player is added to PlayersAIGroup.
-        foreach (DataManager.PlayerAIInitData data in gameManager.DataManager.GetPlayersToInit())
+        List<DataManager.PlayerAIInitData> playersToInit = gameManager.DataManager.GetPlayersToInit();
+        DataManager.PlayerAIInitData data;
+        GameObject currentPlayer;
+        PlayerAI currentPlayerAI;
+        for (int i = 0; i < playersToInit.Count; i++)
         {
-            GameObject currentPlayer = Instantiate(playerAIPrefab, PlayersAIGroup.transform);
-            PlayerAI currentPlayerAI = currentPlayer.GetComponent<PlayerAI>();
+            data = playersToInit[i];
+            currentPlayer = Instantiate(playerAIPrefab, PlayersAIGroup.transform);
+            currentPlayerAI = currentPlayer.GetComponent<PlayerAI>();
 
             currentPlayerAI.playerName = data.Name;
             currentPlayerAI.percentageOfRisk = data.RiskPercentage;
@@ -120,9 +125,10 @@ public class PlayersManager : MonoBehaviour
 
         // Every player is located in its proper position.
         // For each player, the system initializes its OnFinish delegate value.
+        PlayerAI playerAI;
         for (int i = 0; i < AIPlayersCount; i++)
         {
-            PlayerAI playerAI = AIPlayers[i];
+            playerAI = AIPlayers[i];
             playerAI.OnFinish += MoveToNextPlayer;
 
             playerAI.transform.rotation = Quaternion.Euler(
@@ -146,26 +152,30 @@ public class PlayersManager : MonoBehaviour
     public IEnumerator ResetPlayers()
     {
         // Every single AI Player and the Dealer are resetted.
-        foreach (PlayerAI playerAI in AIPlayers)
+        for (int i = 0; i < AIPlayers.Count; i++)
         {
-            yield return StartCoroutine(playerAI.ResetInfos());
+            yield return StartCoroutine(AIPlayers[i].ResetInfos());
         }
         yield return StartCoroutine(playerDealer.ResetInfos());
 
-        if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.SingleClick)
+        switch (GameManager.instance.DataManager.CardSendingMode)
         {
-            // Reset first player
-            currentPlayerIndex = 0;
-            currentPlayer = AIPlayers[currentPlayerIndex];
-            currentPlayer.StartTurn();
-        }
-        else if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
-        {
-            currentPlayer = null;
-            foreach (PlayerAI playerAI in AIPlayers)
-            {
-                playerAI.StartTurn();
-            }
+            case DataManager.CardSendingType.SingleClick:
+                // Reset first player
+                currentPlayerIndex = 0;
+                currentPlayer = AIPlayers[currentPlayerIndex];
+                currentPlayer.StartTurn();
+                break;
+            case DataManager.CardSendingType.DragAndDrop:
+                currentPlayer = null;
+                foreach (PlayerAI playerAI in AIPlayers)
+                {
+                    playerAI.StartTurn();
+                }
+                break;
+            default:
+                // Nothing to do.
+                break;
         }
 
         // Activate the Game phase.
@@ -182,9 +192,9 @@ public class PlayersManager : MonoBehaviour
         int dealerScore = playerDealer.CurrentScore;
         bool isDealerBlackJack = playerDealer.IsBlackJack;
 
-        foreach (PlayerAI playerAI in AIPlayers)
+        for (int i = 0; i < AIPlayers.Count; i++)
         {
-            playerAI.CheckScore(dealerScore, isDealerBlackJack);
+            AIPlayers[i].CheckScore(dealerScore, isDealerBlackJack);
         }
     }
     #endregion
@@ -195,26 +205,30 @@ public class PlayersManager : MonoBehaviour
     /// </summary>
     private void MoveToNextPlayer()
     {
-        if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.SingleClick)
+        switch (GameManager.instance.DataManager.CardSendingMode)
         {
-            currentPlayerIndex++;
-            if (currentPlayerIndex < AIPlayers.Count)
-            {
-                currentPlayer = AIPlayers[currentPlayerIndex];
-            }
-            else
-            {
-                currentPlayer = playerDealer;
-            }
+            case DataManager.CardSendingType.SingleClick:
+                currentPlayerIndex++;
+                if (currentPlayerIndex < AIPlayers.Count)
+                {
+                    currentPlayer = AIPlayers[currentPlayerIndex];
+                }
+                else
+                {
+                    currentPlayer = playerDealer;
+                }
 
-            currentPlayer.StartTurn();
-        }
-        else if (GameManager.instance.DataManager.CardSendingMode == DataManager.CardSendingType.DragAndDrop)
-        {
-            if (AIPlayers.Find(x => x.CurrentState == Player.State.WaitingForCard) == null)
-            {
-                playerDealer.StartTurn();
-            }
+                currentPlayer.StartTurn();
+                break;
+            case DataManager.CardSendingType.DragAndDrop:
+                if (AIPlayers.Find(x => x.CurrentState == Player.State.WaitingForCard) == null)
+                {
+                    playerDealer.StartTurn();
+                }
+                break;
+            default:
+                // Nothing to do.
+                break;
         }
     }
     #endregion

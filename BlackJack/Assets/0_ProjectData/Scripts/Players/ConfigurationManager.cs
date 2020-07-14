@@ -9,35 +9,35 @@ public class ConfigurationManager : MonoBehaviour
 {
     #region Properties
     #region Public
-    public RectTransform rectTransformBlack;
-    public RectTransform rectTransformJack;
+    public RectTransform rectTransformBlack = default;
+    public RectTransform rectTransformJack = default;
 
     /// <summary>
     /// InputField reference to the Dealer's name.
     /// </summary>
     [Header("Phase 1")]
-    public InputField dealerNameInput;
+    public InputField dealerNameInput = default;
     /// <summary>
     /// Slider reference to the amountof AI players.
     /// </summary>
-    public Slider playersAINumberSlider;
+    public Slider playersAINumberSlider = default;
     /// <summary>
     /// Dropdown reference to the card sending method.
     /// </summary>
-    public Dropdown cardSendingMethodDropdown;
+    public Dropdown cardSendingMethodDropdown = default;
 
     /// <summary>
     /// Reference to all the PlayerAIConfigurators.
     /// </summary>
     [Header("Phase 2")]
-    public PlayerAIConfigurator[] configurators;
+    public PlayerAIConfigurator[] configurators = default;
     #endregion
 
     #region Private
     /// <summary>
     /// Reference to the DataManager undestroyable object.
     /// </summary>
-    private DataManager dataManager;
+    private DataManager dataManager = default;
     #endregion
     #endregion
 
@@ -46,7 +46,7 @@ public class ConfigurationManager : MonoBehaviour
     /// Event to invoke when DataManager finishes its Load.
     /// </summary>
     [Space]
-    public UnityEvent OnDataManagerLoadComplete;
+    public UnityEvent OnDataManagerLoadComplete = default;
     #endregion
 
     #region Methods
@@ -99,10 +99,9 @@ public class ConfigurationManager : MonoBehaviour
     {
         dataManager.ClearPlayersToInit();
 
-        dataManager.DealerName = ("" + dealerNameInput.text != "" ? dealerNameInput.text : "Missingno");
+        dataManager.DealerName = (!string.IsNullOrEmpty(dealerNameInput.text) ? dealerNameInput.text : "Missingno");
         dataManager.CardSendingMode = (DataManager.CardSendingType)cardSendingMethodDropdown.value;
-        //dataManager.CardSendingMode = DataManager.CardSendingType.SingleClick;
-
+        
         // Resets informations in players' configurators and activates only the amount required in Phase 1.
         for (int i = 0; i < configurators.Length; i++)
         {
@@ -127,7 +126,7 @@ public class ConfigurationManager : MonoBehaviour
 
             DataManager.PlayerAIInitData data = new DataManager.PlayerAIInitData
             {
-                Name = ("" + currentConfig.playerAINameInput.text != "" ? currentConfig.playerAINameInput.text : "Cyborg#" + Right("0" + (i + 1).ToString(), 2)),
+                Name = (!string.IsNullOrEmpty(currentConfig.playerAINameInput.text) ? currentConfig.playerAINameInput.text : "Cyborg#" + (i + 1).ToString("D2")),
                 RiskPercentage = currentConfig.riskPercentageSlider.value,
                 RiskCalcMinValue = (int)currentConfig.riskMinValueSlider.value
             };
@@ -145,20 +144,6 @@ public class ConfigurationManager : MonoBehaviour
     public void ExitGame()
     {
         Application.Quit();
-    }
-    #endregion
-
-    #region Private
-    /// <summary>
-    /// Substring from the Right.
-    /// </summary>
-    /// <param name="param">Full string.</param>
-    /// <param name="length">Number of characters to extract from right.</param>
-    /// <returns>The desired substring.</returns>
-    private string Right(string param, int length)
-    {
-        string result = param.Substring(param.Length - length, length);
-        return result;
     }
     #endregion
     #endregion

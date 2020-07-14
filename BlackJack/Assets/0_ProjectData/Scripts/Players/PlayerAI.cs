@@ -266,7 +266,7 @@ public class PlayerAI : Player
         yield return new WaitForSeconds(secs);
 
         decisionCanvas.gameObject.SetActive(false);
-        currentDecisionText.text = "";
+        currentDecisionText.text = string.Empty;
 
         yield return null;
     }

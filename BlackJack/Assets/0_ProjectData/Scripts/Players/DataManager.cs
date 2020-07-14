@@ -42,53 +42,22 @@ public class DataManager : MonoBehaviour
     private static bool created = false;
     #endregion
 
-    #region Properties
-    #region Private
+    #region Private Stuff
     /// <summary>
     /// List used to register informations about the players that the system must initialize in game.
     /// </summary>
-    private List<PlayerAIInitData> playersToInit;
-
-    /// <summary>
-    /// The dealer's name.
-    /// </summary>
-    private string dealerName;
-    /// <summary>
-    /// The dealer's name.
-    /// </summary>
-    public string DealerName
-    {
-        get
-        {
-            return dealerName;
-        }
-
-        set
-        {
-            dealerName = value;
-        }
-    }
-
-    /// <summary>
-    /// The mode in which cards are sent to players.
-    /// </summary>
-    private CardSendingType cardSendingMode;
-    /// <summary>
-    /// The mode in which cards are sent to players.
-    /// </summary>
-    public CardSendingType CardSendingMode
-    {
-        get
-        {
-            return cardSendingMode;
-        }
-
-        set
-        {
-            cardSendingMode = value;
-        }
-    }
+    private List<PlayerAIInitData> playersToInit = new List<PlayerAIInitData>();
     #endregion
+
+    #region Properties
+    /// <summary>
+    /// The dealer's name.
+    /// </summary>
+    public string DealerName { get; set; }
+    /// <summary>
+    /// The mode in which cards are sent to players.
+    /// </summary>
+    public CardSendingType CardSendingMode { get; set; }
     #endregion
 
     #region Methods
@@ -96,7 +65,7 @@ public class DataManager : MonoBehaviour
     /// <summary>
     /// Component Awake method.
     /// </summary>
-    void Awake()
+    private void Awake()
     {
         // If the object is not undestroyable, the system sets it as undestroyable.
         if (!created)
@@ -104,15 +73,6 @@ public class DataManager : MonoBehaviour
             DontDestroyOnLoad(this.gameObject);
             created = true;
         }
-    }
-
-    /// <summary>
-    /// Component Start method.
-    /// </summary>
-    void Start()
-    {
-        // Initializing the playersToInit List.
-        if (playersToInit == null) playersToInit = new List<PlayerAIInitData>();
     }
     #endregion
 

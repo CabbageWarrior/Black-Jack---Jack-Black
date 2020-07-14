@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
-using System.Linq;
 
 public class Deck : MonoBehaviour
 {
@@ -67,7 +67,7 @@ public class Deck : MonoBehaviour
     /// <summary>
     /// List of all the cards.
     /// </summary>
-    private List<Card> allCards;
+    private List<Card> allCards = new List<Card>();
     /// <summary>
     /// List of all the cards currentlyin the deck.
     /// </summary>
@@ -184,27 +184,32 @@ public class Deck : MonoBehaviour
 
         // For each card, the shuffle method swaps it with another random card that is part of the deck.
         int n = cardsInDeck.Count;
+        int k;
+        Transform cardTransform;
+        Card temp;
         if (n > 0)
         {
             while (n > 1)
             {
                 n--;
 
+                cardTransform = cardsInDeck[n].transform;
+
                 // Make a "shuffle visual effect" moving cards on axis X and Z.
                 Sequence mySequenceX = DOTween.Sequence();
-                Sequence mySequenceZ = DOTween.Sequence();
                 mySequenceX
-                    .Append(cardsInDeck[n].transform.DOMoveX(transform.position.x + Random.Range(-.2f, .2f), .2f))
-                    .Append(cardsInDeck[n].transform.DOMoveX(transform.position.x, .2f));
+                    .Append(cardTransform.DOMoveX(transform.position.x + Random.Range(-.2f, .2f), .2f))
+                    .Append(cardTransform.DOMoveX(transform.position.x, .2f));
+                Sequence mySequenceZ = DOTween.Sequence();
                 mySequenceZ
-                    .Append(cardsInDeck[n].transform.DOMoveZ(transform.position.z + Random.Range(-.2f, .2f), .2f))
-                    .Append(cardsInDeck[n].transform.DOMoveZ(transform.position.z, .2f));
+                    .Append(cardTransform.DOMoveZ(transform.position.z + Random.Range(-.2f, .2f), .2f))
+                    .Append(cardTransform.DOMoveZ(transform.position.z, .2f));
 
                 // Selecting the random index with which make the swap.
-                int k = Random.Range(0, cardsInDeck.Count);
+                k = Random.Range(0, cardsInDeck.Count);
 
                 // Swapping cards.
-                Card temp = cardsInDeck[k];
+                temp = cardsInDeck[k];
                 cardsInDeck[k] = cardsInDeck[n];
                 cardsInDeck[n] = temp;
             }
@@ -242,17 +247,18 @@ public class Deck : MonoBehaviour
 
         // For each card, the shuffle method swaps it with another random card that is part of the deck.
         int n = cardsInDeck.Count;
+        List<Card> newDeckOrder;
         if (n > 0)
         {
-            List<Card> newDeckOrder = new List<Card>();
-            
-            List<Card> cardsInDeckWithCurrentSuit = new List<Card>();
+            newDeckOrder = new List<Card>();
 
             for (int i = 0; i < suitOrder.Count; i++)
             {
-                cardsInDeckWithCurrentSuit = cardsInDeck.FindAll(x => x.cardSuit == suitOrder[i]).OrderBy(x=>x.cardSuitIndex).ToList();
-
-                newDeckOrder.AddRange(cardsInDeckWithCurrentSuit);
+                newDeckOrder.AddRange(cardsInDeck
+                    .FindAll(x => x.cardSuit == suitOrder[i])
+                    .OrderBy(x => x.cardSuitIndex)
+                    .ToList()
+                );
             }
 
             cardsInDeck = newDeckOrder;
@@ -324,12 +330,12 @@ public class Deck : MonoBehaviour
         if (isManaging)
         {
             isManagingCards = true;
-            if (OnManagingCardsStart != null) OnManagingCardsStart.Invoke();
+            OnManagingCardsStart?.Invoke();
         }
         else
         {
             isManagingCards = false;
-            if (OnManagingCardsEnd != null) OnManagingCardsEnd.Invoke();
+            OnManagingCardsEnd?.Invoke();
         }
     }
 
@@ -345,10 +351,7 @@ public class Deck : MonoBehaviour
     }
     public Vector3 ReaddCardPosition()
     {
-        Vector3 deckInitialPosition = transform.position;
-        Vector3 newPositionPoint = deckInitialPosition + new Vector3(0f, cardOffset * (cardsInDeck.Count + 1), 0f);
-
-        return newPositionPoint;
+        return transform.position + Vector3.up * cardOffset * (cardsInDeck.Count + 1);
     }
 
     public void ClickEvent()
@@ -370,14 +373,7 @@ public class Deck : MonoBehaviour
     /// </summary>
     public void ResetFirstCard()
     {
-        if (cardsInDeck.Count > 0)
-        {
-            firstCard = cardsInDeck[0];
-        }
-        else
-        {
-            firstCard = null;
-        }
+        firstCard = (cardsInDeck.Count > 0 ? cardsInDeck[0] : null);
     }
     #endregion
 
@@ -390,21 +386,17 @@ public class Deck : MonoBehaviour
         SetManagingCards(true);
 
         // Cards List initialization.
-        if (allCards == null)
-        {
-            allCards = new List<Card>();
-        }
-        else
-        {
-            allCards.Clear();
-        }
+        allCards.Clear();
 
+        GameObject newCardGO;
+        Card newCard;
+        int suitIndex;
         // Cards go from 2 to 11/1.
         for (int i = 0; i < 52; i++)
         {
-            GameObject newCardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
+            newCardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
 
-            Card newCard = newCardGO.GetComponent<Card>();
+            newCard = newCardGO.GetComponent<Card>();
             newCard.cardIndex = i;
 
             // Initialize the callback.
@@ -414,7 +406,7 @@ public class Deck : MonoBehaviour
             newCard.cardSuit = (Suit)Mathf.Floor(i / 13);
 
             // Check the index for the single suit.
-            int suitIndex = i % 13;
+            suitIndex = i % 13;
             newCard.cardSuitIndex = suitIndex;
 
             if (suitIndex < 9) // Numbers 2-10
