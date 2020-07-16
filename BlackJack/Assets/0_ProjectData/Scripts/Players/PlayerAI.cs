@@ -46,11 +46,29 @@ public class PlayerAI : Player
     /// Initial scale of the CharacterFace.
     /// </summary>
     private Vector3 characterFaceInitialScale;
+
+    private SpriteRenderer frontFaceSpriteRenderer;
     #endregion
     #endregion
 
     #region Methods
     #region Public
+    public void Initialize(DataManager.PlayerAIInitData data)
+    {
+        frontFaceSpriteRenderer = characterFace.GetComponentInChildren<SpriteRenderer>();
+
+        playerName = data.Name;
+        percentageOfRisk = data.RiskPercentage;
+        minValueForRiskCalculation = data.RiskCalcMinValue;
+
+        // Visual update.
+        nameText.text = playerName;
+        if (frontFaceSpriteRenderer && data.CharacterScriptableObject?.FrontFaceSprite)
+        {
+            frontFaceSpriteRenderer.sprite = data.CharacterScriptableObject.FrontFaceSprite;
+        }
+    }
+
     /// <summary>
     /// Sets the rotation of InfoCanvas.
     /// </summary>
@@ -148,7 +166,7 @@ public class PlayerAI : Player
         else if (isBlackJack || currentScore > dealerScore || dealerScore > GameManager.BlackJackPoints)
         {
             SetHigher();
-}
+        }
         else
         {
             SetLower();

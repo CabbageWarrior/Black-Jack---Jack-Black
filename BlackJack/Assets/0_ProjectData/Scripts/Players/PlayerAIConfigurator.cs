@@ -1,29 +1,12 @@
-﻿using UnityEngine;
+﻿using CabbageSoft.ScriptableObjects;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerAIConfigurator : MonoBehaviour
 {
-    #region Consts
-    /// <summary>
-    /// Default Player Index.
-    /// </summary>
-    const int defaultNumber = 0;
-    /// <summary>
-    /// Default Player Name.
-    /// </summary>
-    const string defaultName = "";
-    /// <summary>
-    /// Default Player Risk Percentage.
-    /// </summary>
-    const float defaultRiskPercentage = 50f;
-    /// <summary>
-    /// Default Player Minimum Score after which calculate risk.
-    /// </summary>
-    const int defaultRiskMinValue = 10;
-    #endregion
-
-    #region Properties
-    #region Public
+    #region Inspector Infos
+    [SerializeField] private DataManager dataManager = default;
+    [Space]
     /// <summary>
     /// PanelInfos reference.
     /// </summary>
@@ -45,34 +28,124 @@ public class PlayerAIConfigurator : MonoBehaviour
     /// PlayerAIRiskMinValueSlider reference.
     /// </summary>
     public Slider riskMinValueSlider;
+    [Space]
+    [SerializeField] private Image playerImage = default;
     #endregion
+
+    #region Private Stuff
+    private int characterConfigIndex = 0;
+
+    private int playerAINumber = default;
+    
+    private CharacterScriptableObject characterScriptableObject = default;
+    private string playerAIName = default;
+    private float riskPercentage = default;
+    private int riskMinValue = default;
+    
+    private Sprite playerSprite = default;
+    #endregion
+
+    #region Properties
+    public CharacterScriptableObject CharacterScriptableObject => characterScriptableObject;
+    public string PlayerAIName => playerAIName;
+    public float RiskPercentage => riskPercentage;
+    public int RiskMinValue => riskMinValue;
     #endregion
 
     #region Methods
-    #region Public
-    /// <summary>
-    /// Resets the COnfigurator infos and deactivates it.
-    /// </summary>
-    public void ResetValues()
-    {
-        playerAINumberText.text = defaultNumber.ToString();
-        playerAINameInput.text = defaultName;
-        riskPercentageSlider.value = defaultRiskPercentage;
-        riskMinValueSlider.value = defaultRiskMinValue;
-
-        panelInfos.SetActive(false);
-    }
-
     /// <summary>
     /// Activates the Configurator panel and adds the correct number in it.
     /// </summary>
     /// <param name="configIndex"></param>
     public void ActivateConfigurator(int configIndex)
     {
-        playerAINumberText.text = (configIndex + 1).ToString();
+        playerAINumber = (configIndex + 1);
+
+        UpdatePlayerAIData();
 
         panelInfos.SetActive(true);
     }
-    #endregion
+
+    /// <summary>
+    /// Resets the COnfigurator infos and deactivates it.
+    /// </summary>
+    public void DeactivateConfigurator()
+    {
+        playerAINumber = dataManager.DefaultNumber;
+        ResetValues();
+
+        panelInfos.SetActive(false);
+    }
+    public void CharPrev()
+    {
+        characterConfigIndex--;
+        if (characterConfigIndex < 0)
+        {
+            characterConfigIndex = 0;
+            return;
+        }
+
+        UpdatePlayerAIData();
+    }
+    public void CharNext()
+    {
+        characterConfigIndex++;
+        if (characterConfigIndex > dataManager.CharacterScriptableObjects.Count)
+        {
+            characterConfigIndex = dataManager.CharacterScriptableObjects.Count;
+            return;
+        }
+
+        UpdatePlayerAIData();
+    }
+
+    private void UpdatePlayerAIData()
+    {
+        if (characterConfigIndex < dataManager.CharacterScriptableObjects.Count)
+        {
+            characterScriptableObject = dataManager.CharacterScriptableObjects[characterConfigIndex];
+
+            playerAIName = characterScriptableObject.CharacterName;
+            riskPercentage = characterScriptableObject.RiskPercentage;
+            riskMinValue = characterScriptableObject.RiskCalcMinValue;
+            playerSprite = characterScriptableObject.PortraitSprite;
+            if (!playerSprite) playerSprite = dataManager.DefaultPortraitSprite; // fallback
+
+            UpdateUI();
+
+            ToggleUIActivation(false);
+        }
+        else
+        {
+            characterScriptableObject = null;
+
+            ResetValues();
+
+            ToggleUIActivation(true);
+        }
+    }
+    private void ResetValues()
+    {
+        playerAIName = dataManager.DefaultName;
+        riskPercentage = dataManager.DefaultRiskPercentage;
+        riskMinValue = dataManager.DefaultRiskMinValue;
+        playerSprite = dataManager.DefaultPortraitSprite;
+
+        UpdateUI();
+    }
+    private void UpdateUI()
+    {
+        playerAINumberText.text = playerAINumber.ToString();
+        playerAINameInput.text = playerAIName;
+        riskPercentageSlider.value = riskPercentage;
+        riskMinValueSlider.value = riskMinValue;
+        playerImage.sprite = playerSprite;
+    }
+    private void ToggleUIActivation(bool active)
+    {
+        playerAINameInput.interactable = active;
+        riskPercentageSlider.interactable = active;
+        riskMinValueSlider.interactable = active;
+    }
     #endregion
 }

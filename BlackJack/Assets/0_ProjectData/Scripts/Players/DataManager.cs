@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using CabbageSoft.ScriptableObjects;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class DataManager : MonoBehaviour
@@ -20,6 +21,8 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public struct PlayerAIInitData
     {
+        public CharacterScriptableObject CharacterScriptableObject;
+
         /// <summary>
         /// Player's name.
         /// </summary>
@@ -42,6 +45,33 @@ public class DataManager : MonoBehaviour
     private static bool created = false;
     #endregion
 
+    #region Inspector Infos
+    [Header("Default Configuration")]
+    /// <summary>
+    /// Default Player Index.
+    /// </summary>
+    [SerializeField] private int defaultNumber = 0;
+    /// <summary>
+    /// Default Player Name.
+    /// </summary>
+    [SerializeField] private string defaultName = "";
+    /// <summary>
+    /// Default Player Risk Percentage.
+    /// </summary>
+    [SerializeField] private float defaultRiskPercentage = 50f;
+    /// <summary>
+    /// Default Player Minimum Score after which calculate risk.
+    /// </summary>
+    [SerializeField] private int defaultRiskMinValue = 10;
+    /// <summary>
+    /// Default Player Sprite.
+    /// </summary>
+    [SerializeField] private Sprite defaultSprite = default;
+
+    [Header("Preconfigured data")]
+    [SerializeField] private List<CharacterScriptableObject> characterScriptableObjects = new List<CharacterScriptableObject>();
+    #endregion
+
     #region Private Stuff
     /// <summary>
     /// List used to register informations about the players that the system must initialize in game.
@@ -50,6 +80,29 @@ public class DataManager : MonoBehaviour
     #endregion
 
     #region Properties
+    /// <summary>
+    /// Default Player Index.
+    /// </summary>
+    public int DefaultNumber => defaultNumber;
+    /// <summary>
+    /// Default Player Name.
+    /// </summary>
+    public string DefaultName => defaultName;
+    /// <summary>
+    /// Default Player Risk Percentage.
+    /// </summary>
+    public float DefaultRiskPercentage => defaultRiskPercentage;
+    /// <summary>
+    /// Default Player Minimum Score after which calculate risk.
+    /// </summary>
+    public int DefaultRiskMinValue => defaultRiskMinValue;
+    /// <summary>
+    /// Default Player Sprite.
+    /// </summary>
+    public Sprite DefaultPortraitSprite => defaultSprite;
+
+    public List<CharacterScriptableObject> CharacterScriptableObjects => characterScriptableObjects;
+
     /// <summary>
     /// The dealer's name.
     /// </summary>

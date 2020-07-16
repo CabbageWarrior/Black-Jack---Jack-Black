@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Jack Dawson (Titanic)
   m_EditorClassIdentifier: 
   characterName: Jack Dawson
-  portraitSprite: {fileID: 0}
-  frontFaceSprite: {fileID: 0}
-  riskPercentage: 50
-  riskCalcMinValue: 10
+  portraitSprite: {fileID: 21300000, guid: 23b8bcd475aee3046aa251281929865d, type: 3}
+  frontFaceSprite: {fileID: 21300000, guid: 23b8bcd475aee3046aa251281929865d, type: 3}
+  riskPercentage: 100
+  riskCalcMinValue: 0

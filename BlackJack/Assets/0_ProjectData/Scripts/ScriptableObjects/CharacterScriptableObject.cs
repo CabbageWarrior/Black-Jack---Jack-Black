@@ -40,7 +40,5 @@ namespace CabbageSoft.ScriptableObjects
         /// </summary>
         public int RiskCalcMinValue => riskCalcMinValue;
         #endregion
-
-
     }
 }

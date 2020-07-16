@@ -94,14 +94,8 @@ public class PlayersManager : MonoBehaviour
             data = playersToInit[i];
             currentPlayer = Instantiate(playerAIPrefab, PlayersAIGroup.transform);
             currentPlayerAI = currentPlayer.GetComponent<PlayerAI>();
-
-            currentPlayerAI.playerName = data.Name;
-            currentPlayerAI.percentageOfRisk = data.RiskPercentage;
-            currentPlayerAI.minValueForRiskCalculation = data.RiskCalcMinValue;
-
-            // Visual update.
-            currentPlayerAI.nameText.text = currentPlayerAI.playerName;
-
+            currentPlayerAI.Initialize(data);
+        
             AIPlayers.Add(currentPlayerAI);
         }
 

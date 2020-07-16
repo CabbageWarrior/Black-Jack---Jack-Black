@@ -105,7 +105,7 @@ public class ConfigurationManager : MonoBehaviour
         // Resets informations in players' configurators and activates only the amount required in Phase 1.
         for (int i = 0; i < configurators.Length; i++)
         {
-            configurators[i].ResetValues();
+            configurators[i].DeactivateConfigurator();
 
             if (i < playersAINumberSlider.value)
             {
@@ -126,9 +126,10 @@ public class ConfigurationManager : MonoBehaviour
 
             DataManager.PlayerAIInitData data = new DataManager.PlayerAIInitData
             {
-                Name = (!string.IsNullOrEmpty(currentConfig.playerAINameInput.text) ? currentConfig.playerAINameInput.text : "Cyborg#" + (i + 1).ToString("D2")),
-                RiskPercentage = currentConfig.riskPercentageSlider.value,
-                RiskCalcMinValue = (int)currentConfig.riskMinValueSlider.value
+                CharacterScriptableObject = currentConfig.CharacterScriptableObject,
+                Name = (!string.IsNullOrEmpty(currentConfig.PlayerAIName) ? currentConfig.PlayerAIName : "Cyborg#" + (i + 1).ToString("D2")),
+                RiskPercentage = currentConfig.RiskPercentage,
+                RiskCalcMinValue = currentConfig.RiskMinValue
             };
 
             dataManager.AddPlayerAI(data);
