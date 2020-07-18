@@ -125,7 +125,13 @@ public class PlayerAIConfigurator : MonoBehaviour
         playerAINameInput.text = CharacterAIProperties.CharacterName;
         riskPercentageSlider.value = CharacterAIProperties.RiskPercentage;
         riskMinValueSlider.value = CharacterAIProperties.RiskCalcMinScore;
-        playerImage.sprite = CharacterAIProperties.PortraitSprite;
+        if (CharacterAIProperties.PortraitSprite)
+        {
+            playerImage.sprite = CharacterAIProperties.PortraitSprite;
+        }
+        else {
+            playerImage.sprite = dataManager.ConfigurationData.DefaultCharacterAIProperties.PortraitSprite; // fallback
+        }
     }
     private void ToggleUIActivation(bool active)
     {
