@@ -101,7 +101,7 @@ public class ConfigurationManager : MonoBehaviour
 
         dataManager.DealerName = (!string.IsNullOrEmpty(dealerNameInput.text) ? dealerNameInput.text : "Missingno");
         dataManager.CardSendingMode = (DataManager.CardSendingType)cardSendingMethodDropdown.value;
-        
+
         // Resets informations in players' configurators and activates only the amount required in Phase 1.
         for (int i = 0; i < configurators.Length; i++)
         {
@@ -124,12 +124,16 @@ public class ConfigurationManager : MonoBehaviour
         {
             PlayerAIConfigurator currentConfig = configurators[i];
 
+            // Data Validation
+            if (string.IsNullOrEmpty(currentConfig.CharacterAIProperties.CharacterName))
+            {
+                currentConfig.CharacterAIProperties.CharacterName = string.Concat("Cyborg#", (i + 1).ToString("D2"));
+            }
+
             DataManager.PlayerAIInitData data = new DataManager.PlayerAIInitData
             {
-                CharacterScriptableObject = currentConfig.CharacterScriptableObject,
-                Name = (!string.IsNullOrEmpty(currentConfig.PlayerAIName) ? currentConfig.PlayerAIName : "Cyborg#" + (i + 1).ToString("D2")),
-                RiskPercentage = currentConfig.RiskPercentage,
-                RiskCalcMinValue = currentConfig.RiskMinValue
+                CharacterAIScriptableObject = currentConfig.CharacterAIScriptableObject,
+                CharacterAIProperties = currentConfig.CharacterAIProperties
             };
 
             dataManager.AddPlayerAI(data);

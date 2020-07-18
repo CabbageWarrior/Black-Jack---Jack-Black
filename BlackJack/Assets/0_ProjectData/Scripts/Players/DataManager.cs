@@ -1,6 +1,7 @@
-﻿using CabbageSoft.ScriptableObjects;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using CabbageSoft.JackBlack.ScriptableObjects;
+using CabbageSoft.JackBlack.Properties;
 
 public class DataManager : MonoBehaviour
 {
@@ -21,20 +22,9 @@ public class DataManager : MonoBehaviour
     /// </summary>
     public struct PlayerAIInitData
     {
-        public CharacterScriptableObject CharacterScriptableObject;
+        public CharacterAIScriptableObject CharacterAIScriptableObject;
 
-        /// <summary>
-        /// Player's name.
-        /// </summary>
-        public string Name;
-        /// <summary>
-        /// Player's percentage of risk.
-        /// </summary>
-        public float RiskPercentage;
-        /// <summary>
-        /// Player's minimum score from which start to calculate the risk.
-        /// </summary>
-        public int RiskCalcMinValue;
+        public CharacterAIProperties CharacterAIProperties;
     }
     #endregion
 
@@ -46,30 +36,14 @@ public class DataManager : MonoBehaviour
     #endregion
 
     #region Inspector Infos
+    /// <summary>
+    /// Configuration Data.
+    /// </summary>
     [Header("Default Configuration")]
-    /// <summary>
-    /// Default Player Index.
-    /// </summary>
-    [SerializeField] private int defaultNumber = 0;
-    /// <summary>
-    /// Default Player Name.
-    /// </summary>
-    [SerializeField] private string defaultName = "";
-    /// <summary>
-    /// Default Player Risk Percentage.
-    /// </summary>
-    [SerializeField] private float defaultRiskPercentage = 50f;
-    /// <summary>
-    /// Default Player Minimum Score after which calculate risk.
-    /// </summary>
-    [SerializeField] private int defaultRiskMinValue = 10;
-    /// <summary>
-    /// Default Player Sprite.
-    /// </summary>
-    [SerializeField] private Sprite defaultSprite = default;
+    [SerializeField] private ConfigurationDataScriptableObject configurationData = default;
 
     [Header("Preconfigured data")]
-    [SerializeField] private List<CharacterScriptableObject> characterScriptableObjects = new List<CharacterScriptableObject>();
+    [SerializeField] private List<CharacterAIScriptableObject> characterScriptableObjects = new List<CharacterAIScriptableObject>();
     #endregion
 
     #region Private Stuff
@@ -80,29 +54,7 @@ public class DataManager : MonoBehaviour
     #endregion
 
     #region Properties
-    /// <summary>
-    /// Default Player Index.
-    /// </summary>
-    public int DefaultNumber => defaultNumber;
-    /// <summary>
-    /// Default Player Name.
-    /// </summary>
-    public string DefaultName => defaultName;
-    /// <summary>
-    /// Default Player Risk Percentage.
-    /// </summary>
-    public float DefaultRiskPercentage => defaultRiskPercentage;
-    /// <summary>
-    /// Default Player Minimum Score after which calculate risk.
-    /// </summary>
-    public int DefaultRiskMinValue => defaultRiskMinValue;
-    /// <summary>
-    /// Default Player Sprite.
-    /// </summary>
-    public Sprite DefaultPortraitSprite => defaultSprite;
-
-    public List<CharacterScriptableObject> CharacterScriptableObjects => characterScriptableObjects;
-
+    public ConfigurationDataScriptableObject ConfigurationData => configurationData;
     /// <summary>
     /// The dealer's name.
     /// </summary>

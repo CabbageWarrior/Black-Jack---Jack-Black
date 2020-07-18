@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f12b5da57ebb05e48b3f832879584cbc, type: 3}
   m_Name: Jack Nicholson
   m_EditorClassIdentifier: 
-  characterName: Jack Nicholson
-  portraitSprite: {fileID: 21300000, guid: 8bf010499afdd4e45bc767971e0ed6c7, type: 3}
-  frontFaceSprite: {fileID: 21300000, guid: 8bf010499afdd4e45bc767971e0ed6c7, type: 3}
-  riskPercentage: 50
-  riskCalcMinValue: 10
+  properties:
+    characterName: Jack Nicholson
+    riskPercentage: 50
+    riskCalcMinScore: 10
+    portraitSprite: {fileID: 21300000, guid: 8bf010499afdd4e45bc767971e0ed6c7, type: 3}
+    frontFaceSprite: {fileID: 21300000, guid: 8bf010499afdd4e45bc767971e0ed6c7, type: 3}

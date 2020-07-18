@@ -57,15 +57,15 @@ public class PlayerAI : Player
     {
         frontFaceSpriteRenderer = characterFace.GetComponentInChildren<SpriteRenderer>();
 
-        playerName = data.Name;
-        percentageOfRisk = data.RiskPercentage;
-        minValueForRiskCalculation = data.RiskCalcMinValue;
+        playerName = data.CharacterAIProperties.CharacterName;
+        percentageOfRisk = data.CharacterAIProperties.RiskPercentage;
+        minValueForRiskCalculation = data.CharacterAIProperties.RiskCalcMinScore;
 
         // Visual update.
         nameText.text = playerName;
-        if (frontFaceSpriteRenderer && data.CharacterScriptableObject?.FrontFaceSprite)
+        if (frontFaceSpriteRenderer && data.CharacterAIProperties.FrontFaceSprite)
         {
-            frontFaceSpriteRenderer.sprite = data.CharacterScriptableObject.FrontFaceSprite;
+            frontFaceSpriteRenderer.sprite = data.CharacterAIProperties.FrontFaceSprite;
         }
     }
 

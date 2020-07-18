@@ -1,6 +1,7 @@
-﻿using CabbageSoft.ScriptableObjects;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
+using CabbageSoft.JackBlack.ScriptableObjects;
+using CabbageSoft.JackBlack.Properties;
 
 public class PlayerAIConfigurator : MonoBehaviour
 {
@@ -35,21 +36,12 @@ public class PlayerAIConfigurator : MonoBehaviour
     #region Private Stuff
     private int characterConfigIndex = 0;
 
-    private int playerAINumber = default;
-    
-    private CharacterScriptableObject characterScriptableObject = default;
-    private string playerAIName = default;
-    private float riskPercentage = default;
-    private int riskMinValue = default;
-    
-    private Sprite playerSprite = default;
+    private int playerAINumber = 0;
     #endregion
 
     #region Properties
-    public CharacterScriptableObject CharacterScriptableObject => characterScriptableObject;
-    public string PlayerAIName => playerAIName;
-    public float RiskPercentage => riskPercentage;
-    public int RiskMinValue => riskMinValue;
+    public CharacterAIScriptableObject CharacterAIScriptableObject { get; private set; } = default;
+    public CharacterAIProperties CharacterAIProperties { get; private set; } = default;
     #endregion
 
     #region Methods
@@ -71,7 +63,7 @@ public class PlayerAIConfigurator : MonoBehaviour
     /// </summary>
     public void DeactivateConfigurator()
     {
-        playerAINumber = dataManager.DefaultNumber;
+        playerAINumber = 0;
         ResetValues();
 
         panelInfos.SetActive(false);
@@ -90,9 +82,9 @@ public class PlayerAIConfigurator : MonoBehaviour
     public void CharNext()
     {
         characterConfigIndex++;
-        if (characterConfigIndex > dataManager.CharacterScriptableObjects.Count)
+        if (characterConfigIndex > dataManager.ConfigurationData.CharacterScriptableObjects.Count)
         {
-            characterConfigIndex = dataManager.CharacterScriptableObjects.Count;
+            characterConfigIndex = dataManager.ConfigurationData.CharacterScriptableObjects.Count;
             return;
         }
 
@@ -101,15 +93,12 @@ public class PlayerAIConfigurator : MonoBehaviour
 
     private void UpdatePlayerAIData()
     {
-        if (characterConfigIndex < dataManager.CharacterScriptableObjects.Count)
+        if (characterConfigIndex < dataManager.ConfigurationData.CharacterScriptableObjects.Count)
         {
-            characterScriptableObject = dataManager.CharacterScriptableObjects[characterConfigIndex];
+            CharacterAIScriptableObject = dataManager.ConfigurationData.CharacterScriptableObjects[characterConfigIndex];
 
-            playerAIName = characterScriptableObject.CharacterName;
-            riskPercentage = characterScriptableObject.RiskPercentage;
-            riskMinValue = characterScriptableObject.RiskCalcMinValue;
-            playerSprite = characterScriptableObject.PortraitSprite;
-            if (!playerSprite) playerSprite = dataManager.DefaultPortraitSprite; // fallback
+            CharacterAIProperties = CharacterAIScriptableObject.Properties.Clone();
+            if (!CharacterAIProperties.PortraitSprite) CharacterAIProperties.PortraitSprite = dataManager.ConfigurationData.DefaultCharacterAIProperties.PortraitSprite; // fallback
 
             UpdateUI();
 
@@ -117,7 +106,7 @@ public class PlayerAIConfigurator : MonoBehaviour
         }
         else
         {
-            characterScriptableObject = null;
+            CharacterAIScriptableObject = null;
 
             ResetValues();
 
@@ -126,20 +115,17 @@ public class PlayerAIConfigurator : MonoBehaviour
     }
     private void ResetValues()
     {
-        playerAIName = dataManager.DefaultName;
-        riskPercentage = dataManager.DefaultRiskPercentage;
-        riskMinValue = dataManager.DefaultRiskMinValue;
-        playerSprite = dataManager.DefaultPortraitSprite;
+        CharacterAIProperties = dataManager.ConfigurationData.DefaultCharacterAIProperties.Clone();
 
         UpdateUI();
     }
     private void UpdateUI()
     {
         playerAINumberText.text = playerAINumber.ToString();
-        playerAINameInput.text = playerAIName;
-        riskPercentageSlider.value = riskPercentage;
-        riskMinValueSlider.value = riskMinValue;
-        playerImage.sprite = playerSprite;
+        playerAINameInput.text = CharacterAIProperties.CharacterName;
+        riskPercentageSlider.value = CharacterAIProperties.RiskPercentage;
+        riskMinValueSlider.value = CharacterAIProperties.RiskCalcMinScore;
+        playerImage.sprite = CharacterAIProperties.PortraitSprite;
     }
     private void ToggleUIActivation(bool active)
     {

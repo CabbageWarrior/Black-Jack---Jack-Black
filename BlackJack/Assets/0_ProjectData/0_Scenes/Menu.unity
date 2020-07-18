@@ -4284,6 +4284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec54fb3f87bea4e409cc1580fc4e7c0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  configurationData: {fileID: 11400000, guid: 8a817456f9c69a34ea22730d36cbe282, type: 2}
   defaultNumber: 0
   defaultName: 
   defaultRiskPercentage: 50
