@@ -24,8 +24,12 @@ MonoBehaviour:
       type: 3}
   characterScriptableObjects:
   - {fileID: 11400000, guid: 9b45855d687a0064f8298a6a46e69aa5, type: 2}
+  - {fileID: 11400000, guid: 09ca62a8fc3206648b275b4c4076df29, type: 2}
+  - {fileID: 11400000, guid: cf81aaa787723374d922a3bc1bd4415a, type: 2}
   - {fileID: 11400000, guid: 4e54b721cab225147b88a55522c3c655, type: 2}
   - {fileID: 11400000, guid: 4f9c0b8ea96f3294582c3ac8a612ba25, type: 2}
+  - {fileID: 11400000, guid: f3c7110b57740ae40a2ddaffad7e3601, type: 2}
+  - {fileID: 11400000, guid: 31881c3d05b4fd24db5ecacc62ae9763, type: 2}
   - {fileID: 11400000, guid: cf36beabd84ec8f4f987a532f58988a2, type: 2}
   - {fileID: 11400000, guid: 10494082a1dcd8847a4d7759355cd07b, type: 2}
   - {fileID: 11400000, guid: caffb3effaa5bea4caffffa6ac3ded92, type: 2}
