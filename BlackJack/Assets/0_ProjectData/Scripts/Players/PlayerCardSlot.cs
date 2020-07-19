@@ -1,68 +1,71 @@
 ﻿using UnityEngine;
 
-public class PlayerCardSlot : MonoBehaviour
+namespace CabbageSoft.BlackJack
 {
-    public Player player;
-    public SpriteRenderer deckHighlighter;
-
-    private void Update()
+    public class PlayerCardSlot : MonoBehaviour
     {
-        if (Input.GetMouseButtonUp(0))
+        public Player player;
+        public SpriteRenderer deckHighlighter;
+
+        private void Update()
         {
-            SwitchHighlighterOff();
+            if (Input.GetMouseButtonUp(0))
+            {
+                SwitchHighlighterOff();
+            }
         }
-    }
 
-    private void OnTriggerStay(Collider other)
-    {
-        if (player.CurrentState == Player.State.WaitingForCard)
+        private void OnTriggerStay(Collider other)
+        {
+            if (player.CurrentState == Player.State.WaitingForCard)
+            {
+                if (other.CompareTag("ValidCard"))
+                {
+                    Card card = other.GetComponent<Card>();
+
+                    if (PlayersManager.currentPlayer == null)
+                    {
+                        PlayersManager.currentPlayer = player;
+                    }
+
+                    if (card.IsDragging)
+                    {
+                        if (PlayersManager.currentPlayer == player)
+                        {
+                            deckHighlighter.enabled = true;
+                        }
+                    }
+                    else
+                    {
+                        if (!card.IsUsed && PlayersManager.currentPlayer == player)
+                        {
+                            player.GetCard(card);
+                            other.tag = "Card";
+
+                            PlayersManager.currentPlayer = null;
+                        }
+                        SwitchHighlighterOff();
+                    }
+                }
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
         {
             if (other.CompareTag("ValidCard"))
             {
-                Card card = other.GetComponent<Card>();
+                SwitchHighlighterOff();
 
-                if (PlayersManager.currentPlayer == null)
+                if (PlayersManager.currentPlayer == player)
                 {
-                    PlayersManager.currentPlayer = player;
-                }
-
-                if (card.IsDragging)
-                {
-                    if (PlayersManager.currentPlayer == player)
-                    {
-                        deckHighlighter.enabled = true;
-                    }
-                }
-                else
-                {
-                    if (!card.IsUsed && PlayersManager.currentPlayer == player)
-                    {
-                        player.GetCard(card);
-                        other.tag = "Card";
-
-                        PlayersManager.currentPlayer = null;
-                    }
-                    SwitchHighlighterOff();
+                    PlayersManager.currentPlayer = null;
                 }
             }
         }
-    }
 
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("ValidCard"))
+        private void SwitchHighlighterOff()
         {
-            SwitchHighlighterOff();
-
-            if (PlayersManager.currentPlayer == player)
-            {
-                PlayersManager.currentPlayer = null;
-            }
+            deckHighlighter.enabled = false;
         }
-    }
-
-    private void SwitchHighlighterOff()
-    {
-        deckHighlighter.enabled = false;
     }
 }

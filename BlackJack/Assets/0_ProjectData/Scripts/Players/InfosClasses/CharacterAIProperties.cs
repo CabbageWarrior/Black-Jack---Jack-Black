@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using CabbageSoft.BlackJack.Characters;
 
-namespace CabbageSoft.JackBlack.Properties
+namespace CabbageSoft.BlackJack.Properties
 {
     /// <summary>
     /// CLass that defines the properties about a Character AI.
@@ -26,6 +27,10 @@ namespace CabbageSoft.JackBlack.Properties
         /// Character's Face Sprite.
         /// </summary>
         [SerializeField, SpriteWithPreview] protected Sprite frontFaceSprite = default;
+        /// <summary>
+        /// Character's Model Prefab.
+        /// </summary>
+        [SerializeField] protected CharacterModelController characterModelPrefab = default;
         #endregion
 
         #region Properties
@@ -61,6 +66,14 @@ namespace CabbageSoft.JackBlack.Properties
             get => frontFaceSprite;
             set => frontFaceSprite = value;
         }
+        /// <summary>
+        /// Character's Model Prefab.
+        /// </summary>
+        public CharacterModelController CharacterModelPrefab
+        {
+            get => characterModelPrefab;
+            set => characterModelPrefab = value;
+        }
         #endregion
 
         public new CharacterAIProperties Clone()
@@ -71,6 +84,7 @@ namespace CabbageSoft.JackBlack.Properties
             newCharacterAIProperties.riskCalcMinScore = this.RiskCalcMinScore;
             newCharacterAIProperties.portraitSprite = this.PortraitSprite;
             newCharacterAIProperties.frontFaceSprite = this.FrontFaceSprite;
+            newCharacterAIProperties.characterModelPrefab = this.CharacterModelPrefab;
 
             return newCharacterAIProperties;
         }

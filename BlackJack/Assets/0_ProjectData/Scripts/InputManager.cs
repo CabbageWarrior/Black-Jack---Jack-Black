@@ -1,43 +1,46 @@
 ﻿using UnityEngine;
 
-public class InputManager : MonoBehaviour
+namespace CabbageSoft.BlackJack
 {
-    public enum InputLayerMask
+    public class InputManager : MonoBehaviour
     {
-        Deck = 1 << 10,
-        Card = 1 << 11
-    }
-
-    void Update()
-    {
-        if (GameManager.instance == null) return;
-        if (GameManager.instance.DataManager == null) return;
-
-        if (Input.GetMouseButtonDown(0))
+        public enum InputLayerMask
         {
-            Ray rayFromCamera = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Deck = 1 << 10,
+            Card = 1 << 11
+        }
 
-            if (Physics.Raycast(rayFromCamera, out RaycastHit hitFromCamera, 100, (int)InputLayerMask.Card))
+        void Update()
+        {
+            if (GameManager.instance == null) return;
+            if (GameManager.instance.DataManager == null) return;
+
+            if (Input.GetMouseButtonDown(0))
             {
-                //Debug.Log("Card hit!");
+                Ray rayFromCamera = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-                Card hitCard = hitFromCamera.transform.GetComponent<Card>();
-                if (hitCard.IsDraggable)
+                if (Physics.Raycast(rayFromCamera, out RaycastHit hitFromCamera, 100, (int)InputLayerMask.Card))
                 {
-                    hitCard.ClickEvent();
+                    //Debug.Log("Card hit!");
+
+                    Card hitCard = hitFromCamera.transform.GetComponent<Card>();
+                    if (hitCard.IsDraggable)
+                    {
+                        hitCard.ClickEvent();
+                        return;
+                    }
+                }
+
+                if (Physics.Raycast(rayFromCamera, out _, 100, (int)InputLayerMask.Deck))
+                {
+                    //Debug.Log("Deck hit!");
+
+                    if (GameManager.StaticDeckRef != null)
+                    {
+                        GameManager.StaticDeckRef.ClickEvent();
+                    }
                     return;
                 }
-            }
-
-            if (Physics.Raycast(rayFromCamera, out _, 100, (int)InputLayerMask.Deck))
-            {
-                //Debug.Log("Deck hit!");
-
-                if (GameManager.StaticDeckRef != null)
-                {
-                    GameManager.StaticDeckRef.ClickEvent();
-                }
-                return;
             }
         }
     }

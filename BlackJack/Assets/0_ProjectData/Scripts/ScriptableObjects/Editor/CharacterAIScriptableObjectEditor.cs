@@ -1,6 +1,6 @@
 ﻿using UnityEditor;
 
-namespace CabbageSoft.JackBlack.ScriptableObjects
+namespace CabbageSoft.BlackJack.ScriptableObjects
 {
     [CustomEditor(typeof(CharacterAIScriptableObject))]
     public class CharacterAIScriptableObjectEditor : Editor { }
