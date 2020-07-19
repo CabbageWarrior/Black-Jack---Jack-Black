@@ -18,3 +18,5 @@ MonoBehaviour:
     riskCalcMinScore: 0
     portraitSprite: {fileID: 21300000, guid: e0d7651b0fb49ff4095f647a5cdcaa01, type: 3}
     frontFaceSprite: {fileID: 21300000, guid: e0d7651b0fb49ff4095f647a5cdcaa01, type: 3}
+    characterModelPrefab: {fileID: 2377538924998706439, guid: 4e9ab74ba3e3fcd49981bcf74f4ee2b0,
+      type: 3}
