@@ -354,8 +354,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -1, z: 2.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 4535579326940196}
+  m_Children: []
   m_Father: {fileID: 4503107762130332}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -417,12 +416,11 @@ MonoBehaviour:
   OnFinishTurn:
     m_PersistentCalls:
       m_Calls: []
+  modelPivotTransform: {fileID: 4636395353314620}
   percentageOfRisk: 30
   minValueForRiskCalculation: 18
   decisionCanvas: {fileID: 223803873689015612}
   currentDecisionText: {fileID: 114623596617034766}
-  characterFace: {fileID: 1696223736381882}
-  characterModelController: {fileID: 4018508642649044950}
 --- !u!1 &1319174816466462
 GameObject:
   m_ObjectHideFlags: 0
@@ -1083,61 +1081,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 114553135070600408}
   deckHighlighter: {fileID: 212638998665202700}
---- !u!1001 &1673697902634513105
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 4636395353314620}
-    m_Modifications:
-    - target: {fileID: 1669206304045577973, guid: 6b1456498c80bbe4d9e032a440a321f7,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669206304045577973, guid: 6b1456498c80bbe4d9e032a440a321f7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669206304045577973, guid: 6b1456498c80bbe4d9e032a440a321f7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 1669206304045577973, guid: 6b1456498c80bbe4d9e032a440a321f7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1674872141493911639, guid: 6b1456498c80bbe4d9e032a440a321f7,
-        type: 3}
-      propertyPath: m_Name
-      value: CharacterModel-Generic
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 6b1456498c80bbe4d9e032a440a321f7, type: 3}
---- !u!114 &4018508642649044950 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2377538924998706439, guid: 6b1456498c80bbe4d9e032a440a321f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1673697902634513105}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 32fbaafd15cd0a84f98434b66aa302cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!1 &1696223736381882 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1674263649597584235, guid: 6b1456498c80bbe4d9e032a440a321f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1673697902634513105}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4535579326940196 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1669206304045577973, guid: 6b1456498c80bbe4d9e032a440a321f7,
-    type: 3}
-  m_PrefabInstance: {fileID: 1673697902634513105}
-  m_PrefabAsset: {fileID: 0}

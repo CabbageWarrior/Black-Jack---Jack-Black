@@ -101,6 +101,7 @@ namespace CabbageSoft.BlackJack.Characters
 
                 CharacterAIProperties = CharacterAIScriptableObject.Properties.Clone();
                 if (!CharacterAIProperties.PortraitSprite) CharacterAIProperties.PortraitSprite = dataManager.ConfigurationData.DefaultCharacterAIProperties.PortraitSprite; // fallback
+                if (!CharacterAIProperties.CharacterModelPrefab) CharacterAIProperties.CharacterModelPrefab = dataManager.ConfigurationData.DefaultCharacterAIProperties.CharacterModelPrefab; // fallback
 
                 UpdateUI();
 

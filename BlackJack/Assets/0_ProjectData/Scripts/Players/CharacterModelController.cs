@@ -38,11 +38,6 @@ namespace CabbageSoft.BlackJack.Characters
 
         private Sequence faceSequence = default;
 
-        private void Awake()
-        {
-            frontFaceSpriteRenderer = characterFace.GetComponentInChildren<SpriteRenderer>();
-        }
-
         private void Start()
         {
             characterFaceInitialScale = characterFace.transform.localScale;
@@ -74,6 +69,9 @@ namespace CabbageSoft.BlackJack.Characters
 
         public void SetFaceSprite(Sprite sprite)
         {
+            if (!frontFaceSpriteRenderer)
+                frontFaceSpriteRenderer = characterFace.GetComponentInChildren<SpriteRenderer>();
+
             if (frontFaceSpriteRenderer && sprite)
             {
                 frontFaceSpriteRenderer.sprite = sprite;

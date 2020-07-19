@@ -9,6 +9,8 @@ namespace CabbageSoft.BlackJack
     {
         #region Properties
         #region Public
+        public Transform modelPivotTransform = default;
+
         /// <summary>
         /// Percentage of risk when the score is greater than the minimum score for risk calculation.
         /// </summary>
@@ -28,9 +30,6 @@ namespace CabbageSoft.BlackJack
         /// Reference to the CurrentDecisionText.
         /// </summary>
         public Text currentDecisionText;
-
-        [Space]
-        public CharacterModelController characterModelController = default;
         #endregion
 
         #region Private
@@ -38,6 +37,8 @@ namespace CabbageSoft.BlackJack
         /// Reference to the coroutines that manage the DecisionPanel.
         /// </summary>
         private Coroutine manageDecisionPanelCoroutine;
+
+        private CharacterModelController characterModelController = default;
         #endregion
         #endregion
 
@@ -45,6 +46,8 @@ namespace CabbageSoft.BlackJack
         #region Public
         public void Initialize(DataManager.PlayerAIInitData data)
         {
+            characterModelController = Instantiate(data.CharacterAIProperties.CharacterModelPrefab, modelPivotTransform);
+
             playerName = data.CharacterAIProperties.CharacterName;
             percentageOfRisk = data.CharacterAIProperties.RiskPercentage;
             minValueForRiskCalculation = data.CharacterAIProperties.RiskCalcMinScore;
