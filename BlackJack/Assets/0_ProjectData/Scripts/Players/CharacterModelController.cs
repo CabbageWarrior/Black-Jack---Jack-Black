@@ -86,7 +86,7 @@ namespace CabbageSoft.BlackJack.Characters
             {
                 // Scales the face to a greater value in order to declare who is the current player.
                 faceSequence = DOTween.Sequence();
-                faceSequence.Append(characterFace.transform.DOScale(characterFaceInitialScale + Vector3.one * .25f, .3f));
+                faceSequence.Append(characterFace.transform.DOScale(characterFaceInitialScale * 1.25f, .3f));
             }
             else
             {
