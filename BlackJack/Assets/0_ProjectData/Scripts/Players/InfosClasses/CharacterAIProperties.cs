@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CabbageSoft.JackBlack.Properties
+namespace CabbageSoft.BlackJack.Properties
 {
     /// <summary>
     /// CLass that defines the properties about a Character AI.

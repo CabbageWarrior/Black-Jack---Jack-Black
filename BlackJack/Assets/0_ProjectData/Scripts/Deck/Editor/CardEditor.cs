@@ -3,21 +3,24 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-[CustomEditor(typeof(Card))]
-public class CardEditor : Editor
+namespace CabbageSoft.BlackJack
 {
-    public override void OnInspectorGUI()
+    [CustomEditor(typeof(Card))]
+    public class CardEditor : Editor
     {
-        DrawDefaultInspector();
+        public override void OnInspectorGUI()
+        {
+            DrawDefaultInspector();
 
-        Card myCard = (Card)target;
-        if (GUILayout.Button("Show"))
-        {
-            myCard.Toggle(true);
-        }
-        if (GUILayout.Button("Hide"))
-        {
-            myCard.Toggle(false);
+            Card myCard = (Card)target;
+            if (GUILayout.Button("Show"))
+            {
+                myCard.Toggle(true);
+            }
+            if (GUILayout.Button("Hide"))
+            {
+                myCard.Toggle(false);
+            }
         }
     }
 }

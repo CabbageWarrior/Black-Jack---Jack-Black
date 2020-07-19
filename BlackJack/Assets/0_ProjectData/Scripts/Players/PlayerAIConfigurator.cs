@@ -1,143 +1,147 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
-using CabbageSoft.JackBlack.ScriptableObjects;
-using CabbageSoft.JackBlack.Properties;
+using CabbageSoft.BlackJack.ScriptableObjects;
+using CabbageSoft.BlackJack.Properties;
 
-public class PlayerAIConfigurator : MonoBehaviour
+namespace CabbageSoft.BlackJack.Characters
 {
-    #region Inspector Infos
-    [SerializeField] private DataManager dataManager = default;
-    [Space]
-    /// <summary>
-    /// PanelInfos reference.
-    /// </summary>
-    public GameObject panelInfos;
-    /// <summary>
-    /// PlayerAINumberText reference.
-    /// </summary>
-    [Space]
-    public Text playerAINumberText;
-    /// <summary>
-    /// PlayerAINameInput reference.
-    /// </summary>
-    public InputField playerAINameInput;
-    /// <summary>
-    /// PlayerAIRiskPercentageSlider reference.
-    /// </summary>
-    public Slider riskPercentageSlider;
-    /// <summary>
-    /// PlayerAIRiskMinValueSlider reference.
-    /// </summary>
-    public Slider riskMinValueSlider;
-    [Space]
-    [SerializeField] private Image playerImage = default;
-    #endregion
-
-    #region Private Stuff
-    private int characterConfigIndex = 0;
-
-    private int playerAINumber = 0;
-    #endregion
-
-    #region Properties
-    public CharacterAIScriptableObject CharacterAIScriptableObject { get; private set; } = default;
-    public CharacterAIProperties CharacterAIProperties { get; private set; } = default;
-    #endregion
-
-    #region Methods
-    /// <summary>
-    /// Activates the Configurator panel and adds the correct number in it.
-    /// </summary>
-    /// <param name="configIndex"></param>
-    public void ActivateConfigurator(int configIndex)
+    public class PlayerAIConfigurator : MonoBehaviour
     {
-        playerAINumber = (configIndex + 1);
+        #region Inspector Infos
+        [SerializeField] private DataManager dataManager = default;
+        [Space]
+        /// <summary>
+        /// PanelInfos reference.
+        /// </summary>
+        public GameObject panelInfos;
+        /// <summary>
+        /// PlayerAINumberText reference.
+        /// </summary>
+        [Space]
+        public Text playerAINumberText;
+        /// <summary>
+        /// PlayerAINameInput reference.
+        /// </summary>
+        public InputField playerAINameInput;
+        /// <summary>
+        /// PlayerAIRiskPercentageSlider reference.
+        /// </summary>
+        public Slider riskPercentageSlider;
+        /// <summary>
+        /// PlayerAIRiskMinValueSlider reference.
+        /// </summary>
+        public Slider riskMinValueSlider;
+        [Space]
+        [SerializeField] private Image playerImage = default;
+        #endregion
 
-        UpdatePlayerAIData();
+        #region Private Stuff
+        private int characterConfigIndex = 0;
 
-        panelInfos.SetActive(true);
-    }
+        private int playerAINumber = 0;
+        #endregion
 
-    /// <summary>
-    /// Resets the COnfigurator infos and deactivates it.
-    /// </summary>
-    public void DeactivateConfigurator()
-    {
-        playerAINumber = 0;
-        ResetValues();
+        #region Properties
+        public CharacterAIScriptableObject CharacterAIScriptableObject { get; private set; } = default;
+        public CharacterAIProperties CharacterAIProperties { get; private set; } = default;
+        #endregion
 
-        panelInfos.SetActive(false);
-    }
-    public void CharPrev()
-    {
-        characterConfigIndex--;
-        if (characterConfigIndex < 0)
+        #region Methods
+        /// <summary>
+        /// Activates the Configurator panel and adds the correct number in it.
+        /// </summary>
+        /// <param name="configIndex"></param>
+        public void ActivateConfigurator(int configIndex)
         {
-            characterConfigIndex = 0;
-            return;
+            playerAINumber = (configIndex + 1);
+
+            UpdatePlayerAIData();
+
+            panelInfos.SetActive(true);
         }
 
-        UpdatePlayerAIData();
-    }
-    public void CharNext()
-    {
-        characterConfigIndex++;
-        if (characterConfigIndex > dataManager.ConfigurationData.CharacterScriptableObjects.Count)
+        /// <summary>
+        /// Resets the COnfigurator infos and deactivates it.
+        /// </summary>
+        public void DeactivateConfigurator()
         {
-            characterConfigIndex = dataManager.ConfigurationData.CharacterScriptableObjects.Count;
-            return;
-        }
-
-        UpdatePlayerAIData();
-    }
-
-    private void UpdatePlayerAIData()
-    {
-        if (characterConfigIndex < dataManager.ConfigurationData.CharacterScriptableObjects.Count)
-        {
-            CharacterAIScriptableObject = dataManager.ConfigurationData.CharacterScriptableObjects[characterConfigIndex];
-
-            CharacterAIProperties = CharacterAIScriptableObject.Properties.Clone();
-            if (!CharacterAIProperties.PortraitSprite) CharacterAIProperties.PortraitSprite = dataManager.ConfigurationData.DefaultCharacterAIProperties.PortraitSprite; // fallback
-
-            UpdateUI();
-
-            ToggleUIActivation(false);
-        }
-        else
-        {
-            CharacterAIScriptableObject = null;
-
+            playerAINumber = 0;
             ResetValues();
 
-            ToggleUIActivation(true);
+            panelInfos.SetActive(false);
         }
-    }
-    private void ResetValues()
-    {
-        CharacterAIProperties = dataManager.ConfigurationData.DefaultCharacterAIProperties.Clone();
-
-        UpdateUI();
-    }
-    private void UpdateUI()
-    {
-        playerAINumberText.text = playerAINumber.ToString();
-        playerAINameInput.text = CharacterAIProperties.CharacterName;
-        riskPercentageSlider.value = CharacterAIProperties.RiskPercentage;
-        riskMinValueSlider.value = CharacterAIProperties.RiskCalcMinScore;
-        if (CharacterAIProperties.PortraitSprite)
+        public void CharPrev()
         {
-            playerImage.sprite = CharacterAIProperties.PortraitSprite;
+            characterConfigIndex--;
+            if (characterConfigIndex < 0)
+            {
+                characterConfigIndex = 0;
+                return;
+            }
+
+            UpdatePlayerAIData();
         }
-        else {
-            playerImage.sprite = dataManager.ConfigurationData.DefaultCharacterAIProperties.PortraitSprite; // fallback
+        public void CharNext()
+        {
+            characterConfigIndex++;
+            if (characterConfigIndex > dataManager.ConfigurationData.CharacterScriptableObjects.Count)
+            {
+                characterConfigIndex = dataManager.ConfigurationData.CharacterScriptableObjects.Count;
+                return;
+            }
+
+            UpdatePlayerAIData();
         }
+
+        private void UpdatePlayerAIData()
+        {
+            if (characterConfigIndex < dataManager.ConfigurationData.CharacterScriptableObjects.Count)
+            {
+                CharacterAIScriptableObject = dataManager.ConfigurationData.CharacterScriptableObjects[characterConfigIndex];
+
+                CharacterAIProperties = CharacterAIScriptableObject.Properties.Clone();
+                if (!CharacterAIProperties.PortraitSprite) CharacterAIProperties.PortraitSprite = dataManager.ConfigurationData.DefaultCharacterAIProperties.PortraitSprite; // fallback
+
+                UpdateUI();
+
+                ToggleUIActivation(false);
+            }
+            else
+            {
+                CharacterAIScriptableObject = null;
+
+                ResetValues();
+
+                ToggleUIActivation(true);
+            }
+        }
+        private void ResetValues()
+        {
+            CharacterAIProperties = dataManager.ConfigurationData.DefaultCharacterAIProperties.Clone();
+
+            UpdateUI();
+        }
+        private void UpdateUI()
+        {
+            playerAINumberText.text = playerAINumber.ToString();
+            playerAINameInput.text = CharacterAIProperties.CharacterName;
+            riskPercentageSlider.value = CharacterAIProperties.RiskPercentage;
+            riskMinValueSlider.value = CharacterAIProperties.RiskCalcMinScore;
+            if (CharacterAIProperties.PortraitSprite)
+            {
+                playerImage.sprite = CharacterAIProperties.PortraitSprite;
+            }
+            else
+            {
+                playerImage.sprite = dataManager.ConfigurationData.DefaultCharacterAIProperties.PortraitSprite; // fallback
+            }
+        }
+        private void ToggleUIActivation(bool active)
+        {
+            playerAINameInput.interactable = active;
+            riskPercentageSlider.interactable = active;
+            riskMinValueSlider.interactable = active;
+        }
+        #endregion
     }
-    private void ToggleUIActivation(bool active)
-    {
-        playerAINameInput.interactable = active;
-        riskPercentageSlider.interactable = active;
-        riskMinValueSlider.interactable = active;
-    }
-    #endregion
 }

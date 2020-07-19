@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using CabbageSoft.JackBlack.Properties;
+using CabbageSoft.BlackJack.Properties;
 
-namespace CabbageSoft.JackBlack.ScriptableObjects
+namespace CabbageSoft.BlackJack.ScriptableObjects
 {
     /// <summary>
     /// <para>Class that contains the configuration of the application.</para>
