@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
+using CabbageSoft.BlackJack.Characters;
 
 namespace CabbageSoft.BlackJack
 {
@@ -29,14 +29,8 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         public Text currentDecisionText;
 
-        /// <summary>
-        /// Reference to the CharacterAnimator.
-        /// </summary>
-        public Animator characterAnimator;
-        /// <summary>
-        /// Reference to the CharacterFace.
-        /// </summary>
-        public GameObject characterFace;
+        [Space]
+        public CharacterModelController characterModelController = default;
         #endregion
 
         #region Private
@@ -44,12 +38,6 @@ namespace CabbageSoft.BlackJack
         /// Reference to the coroutines that manage the DecisionPanel.
         /// </summary>
         private Coroutine manageDecisionPanelCoroutine;
-        /// <summary>
-        /// Initial scale of the CharacterFace.
-        /// </summary>
-        private Vector3 characterFaceInitialScale;
-
-        private SpriteRenderer frontFaceSpriteRenderer;
         #endregion
         #endregion
 
@@ -57,18 +45,14 @@ namespace CabbageSoft.BlackJack
         #region Public
         public void Initialize(DataManager.PlayerAIInitData data)
         {
-            frontFaceSpriteRenderer = characterFace.GetComponentInChildren<SpriteRenderer>();
-
             playerName = data.CharacterAIProperties.CharacterName;
             percentageOfRisk = data.CharacterAIProperties.RiskPercentage;
             minValueForRiskCalculation = data.CharacterAIProperties.RiskCalcMinScore;
 
             // Visual update.
             nameText.text = playerName;
-            if (frontFaceSpriteRenderer && data.CharacterAIProperties.FrontFaceSprite)
-            {
-                frontFaceSpriteRenderer.sprite = data.CharacterAIProperties.FrontFaceSprite;
-            }
+
+            characterModelController.SetFaceSprite(data.CharacterAIProperties.FrontFaceSprite);
         }
 
         /// <summary>
@@ -89,9 +73,6 @@ namespace CabbageSoft.BlackJack
             // Default ResetInfos functions...
             yield return StartCoroutine(base.ResetInfos());
 
-            // Initialize the initial scale of the face.
-            characterFaceInitialScale = characterFace.transform.localScale;
-
             HideDecisionPanelAfterSecs(0f);
 
             yield return null;
@@ -105,7 +86,7 @@ namespace CabbageSoft.BlackJack
             base.StartTurn();
 
             // Scales the face to a greater value in order to declare who is the current player.
-            characterFace.transform.DOScale(characterFaceInitialScale + Vector3.one * .25f, .3f);
+            characterModelController.SetFaceScale(true);
 
             MakeDecision();
         }
@@ -135,7 +116,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         public override void Stop()
         {
-            characterAnimator.SetTrigger("Stop");
+            characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Stop);
 
             decisionCanvas.gameObject.SetActive(true);
             currentDecisionText.text = "Ok, I'm done.";
@@ -182,7 +163,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         protected override void Bust()
         {
-            characterAnimator.SetTrigger("Busted");
+            characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Busted);
 
             // Default Bust functions...
             base.Bust();
@@ -193,7 +174,7 @@ namespace CabbageSoft.BlackJack
         protected override void Finish()
         {
             // Resets the face's scale.
-            characterFace.transform.DOScale(characterFaceInitialScale, .2f);
+            characterModelController.SetFaceScale(false);
 
             // Default Finish functions...
             base.Finish();
@@ -235,7 +216,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         private void AskCard()
         {
-            characterAnimator.SetTrigger("Ask Card");
+            characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.AskCard);
 
             decisionCanvas.gameObject.SetActive(true);
             currentDecisionText.text = "Gimme my card number " + (currentCards.Count + 1).ToString() + "!";
@@ -245,7 +226,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         private void SetHigher()
         {
-            characterAnimator.SetTrigger("Win");
+            characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Win);
             decisionCanvas.gameObject.SetActive(true);
             currentDecisionText.text = "YEEEEEAH!";
             HideDecisionPanelAfterSecs(2f);
@@ -257,7 +238,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         private void SetLower()
         {
-            characterAnimator.SetTrigger("Lose");
+            characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Lose);
             decisionCanvas.gameObject.SetActive(true);
             currentDecisionText.text = "Oh no!";
             HideDecisionPanelAfterSecs(2f);
