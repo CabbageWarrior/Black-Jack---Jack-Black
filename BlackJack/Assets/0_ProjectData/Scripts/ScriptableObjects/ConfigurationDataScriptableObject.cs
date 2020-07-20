@@ -20,13 +20,20 @@ namespace CabbageSoft.BlackJack.ScriptableObjects
         /// <summary>
         /// Default Character AI infos.
         /// </summary>
-        [Header("==> Characters AI", order = 1)]
+        [Header("==> Characters AI")]
         [SerializeField] private CharacterAIProperties defaultCharacterAIproperties = default;
         /// <summary>
         /// List of preconfigured Characters AI.
         /// </summary>
         [Space]
         [SerializeField] private List<CharacterAIScriptableObject> characterScriptableObjects = new List<CharacterAIScriptableObject>();
+
+        [Header("==> Match")]
+        [SerializeField] private int playersNumberMin = default;
+        [SerializeField] private int playersNumberMax = default;
+        [SerializeField] private int defaultPlayersNumber = default;
+        [Space]
+        [SerializeField] private DataManager.CardSendingType defaultCardSendingMethod = default;
         #endregion
 
         #region Properties
@@ -42,6 +49,12 @@ namespace CabbageSoft.BlackJack.ScriptableObjects
         /// List of preconfigured Characters AI.
         /// </summary>
         public List<CharacterAIScriptableObject> CharacterScriptableObjects => characterScriptableObjects;
+
+        public int PlayersNumberMin => playersNumberMin;
+        public int PlayersNumberMax => playersNumberMax;
+        public int DefaultPlayersNumber => defaultPlayersNumber;
+
+        public DataManager.CardSendingType DefaultCardSendingMethod => defaultCardSendingMethod;
         #endregion
     }
 }

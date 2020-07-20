@@ -23,10 +23,14 @@ namespace CabbageSoft.BlackJack
         /// <summary>
         /// Slider reference to the amountof AI players.
         /// </summary>
+        [Space]
         public Slider playersAINumberSlider = default;
+        [SerializeField] private Text playersAINumberMinText = default;
+        [SerializeField] private Text playersAINumberMaxText = default;
         /// <summary>
         /// Dropdown reference to the card sending method.
         /// </summary>
+        [Space]
         public Dropdown cardSendingMethodDropdown = default;
 
         /// <summary>
@@ -65,6 +69,19 @@ namespace CabbageSoft.BlackJack
             {
                 dataManager = GameObject.FindObjectOfType<DataManager>();
             }
+
+            // Fixed configuration
+            playersAINumberSlider.minValue = dataManager.ConfigurationData.PlayersNumberMin;
+            playersAINumberSlider.maxValue = dataManager.ConfigurationData.PlayersNumberMax;
+
+            playersAINumberMinText.text = dataManager.ConfigurationData.PlayersNumberMin.ToString();
+            playersAINumberMaxText.text = dataManager.ConfigurationData.PlayersNumberMax.ToString();
+
+            if (dataManager.ConfigurationData.DefaultPlayersNumber < playersAINumberSlider.minValue) playersAINumberSlider.value = playersAINumberSlider.minValue;
+            else if (dataManager.ConfigurationData.DefaultPlayersNumber > playersAINumberSlider.maxValue) playersAINumberSlider.value = playersAINumberSlider.maxValue;
+            else playersAINumberSlider.value = dataManager.ConfigurationData.DefaultPlayersNumber;
+
+            cardSendingMethodDropdown.value = (int)dataManager.ConfigurationData.DefaultCardSendingMethod;
 
             if (OnDataManagerLoadComplete != null) OnDataManagerLoadComplete.Invoke();
             yield return null;

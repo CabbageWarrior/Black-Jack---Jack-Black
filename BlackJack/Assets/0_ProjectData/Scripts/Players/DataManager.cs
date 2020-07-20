@@ -43,9 +43,6 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         [Header("Default Configuration")]
         [SerializeField] private ConfigurationDataScriptableObject configurationData = default;
-
-        [Header("Preconfigured data")]
-        [SerializeField] private List<CharacterAIScriptableObject> characterScriptableObjects = new List<CharacterAIScriptableObject>();
         #endregion
 
         #region Private Stuff

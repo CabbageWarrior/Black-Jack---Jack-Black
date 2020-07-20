@@ -989,6 +989,8 @@ MonoBehaviour:
   rectTransformJack: {fileID: 1908610780}
   dealerNameInput: {fileID: 1463220506}
   playersAINumberSlider: {fileID: 1802493405}
+  playersAINumberMinText: {fileID: 978145395}
+  playersAINumberMaxText: {fileID: 607399412}
   cardSendingMethodDropdown: {fileID: 1119133800}
   configurators:
   - {fileID: 1904384551}
@@ -4285,16 +4287,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configurationData: {fileID: 11400000, guid: 8a817456f9c69a34ea22730d36cbe282, type: 2}
-  defaultNumber: 0
-  defaultName: 
-  defaultRiskPercentage: 50
-  defaultRiskMinValue: 10
-  defaultSprite: {fileID: 21300000, guid: 6dce04b6fc521b44b8d480a18f5bb1c9, type: 3}
-  characterScriptableObjects:
-  - {fileID: 11400000, guid: 4e54b721cab225147b88a55522c3c655, type: 2}
-  - {fileID: 11400000, guid: 4f9c0b8ea96f3294582c3ac8a612ba25, type: 2}
-  - {fileID: 11400000, guid: 10494082a1dcd8847a4d7759355cd07b, type: 2}
-  - {fileID: 11400000, guid: caffb3effaa5bea4caffffa6ac3ded92, type: 2}
 --- !u!4 &1338921456
 Transform:
   m_ObjectHideFlags: 0
@@ -4346,7 +4338,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -3.4500122}
+  m_AnchoredPosition: {x: 0, y: -3.4500427}
   m_SizeDelta: {x: -78, y: -23.099998}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1398560801
