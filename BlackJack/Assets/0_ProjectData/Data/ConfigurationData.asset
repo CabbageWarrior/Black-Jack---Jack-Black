@@ -24,8 +24,10 @@ MonoBehaviour:
       type: 3}
   characterScriptableObjects:
   - {fileID: 11400000, guid: 9b45855d687a0064f8298a6a46e69aa5, type: 2}
-  - {fileID: 11400000, guid: 09ca62a8fc3206648b275b4c4076df29, type: 2}
+  - {fileID: 11400000, guid: 0c7f3285ef1171947aa412aeb16471cb, type: 2}
+  - {fileID: 11400000, guid: 6a3b32118efa862419c5b89105d33205, type: 2}
   - {fileID: 11400000, guid: cf81aaa787723374d922a3bc1bd4415a, type: 2}
+  - {fileID: 11400000, guid: 09ca62a8fc3206648b275b4c4076df29, type: 2}
   - {fileID: 11400000, guid: 4e54b721cab225147b88a55522c3c655, type: 2}
   - {fileID: 11400000, guid: 4f9c0b8ea96f3294582c3ac8a612ba25, type: 2}
   - {fileID: 11400000, guid: f3c7110b57740ae40a2ddaffad7e3601, type: 2}
@@ -37,3 +39,4 @@ MonoBehaviour:
   playersNumberMin: 1
   playersNumberMax: 7
   defaultPlayersNumber: 4
+  defaultCardSendingMethod: 1
