@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f12b5da57ebb05e48b3f832879584cbc, type: 3}
-  m_Name: Black Widow
+  m_Name: Simple Jack
   m_EditorClassIdentifier: 
   properties:
-    characterName: Black Widow
+    characterName: Simple Jack
     riskPercentage: 50
     riskCalcMinScore: 10
-    portraitSprite: {fileID: 21300000, guid: 6a8b604eaa577e947ac6d1b3cd4a1971, type: 3}
-    frontFaceSprite: {fileID: 21300000, guid: 6a8b604eaa577e947ac6d1b3cd4a1971, type: 3}
+    portraitSprite: {fileID: 21300000, guid: a782b3fee1ca2a84eaf4e5f2c75b955a, type: 3}
+    frontFaceSprite: {fileID: 21300000, guid: a782b3fee1ca2a84eaf4e5f2c75b955a, type: 3}
     characterModelPrefab: {fileID: 0}
