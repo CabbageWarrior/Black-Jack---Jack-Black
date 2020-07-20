@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f12b5da57ebb05e48b3f832879584cbc, type: 3}
-  m_Name: Jack (Fagiolo)
+  m_Name: Jack Daniels
   m_EditorClassIdentifier: 
   properties:
-    characterName: Jack
+    characterName: Jack Daniel's
     riskPercentage: 50
     riskCalcMinScore: 10
-    portraitSprite: {fileID: 21300000, guid: a6064a5917a1b984a922ed650022bcdc, type: 3}
-    frontFaceSprite: {fileID: 21300000, guid: a6064a5917a1b984a922ed650022bcdc, type: 3}
-    characterModelPrefab: {fileID: 0}
+    portraitSprite: {fileID: 21300000, guid: 8a3f7f5c399476645a72b08426cfd24b, type: 3}
+    frontFaceSprite: {fileID: 21300000, guid: 8a3f7f5c399476645a72b08426cfd24b, type: 3}
+    characterModelPrefab: {fileID: 2377538924998706439, guid: d1da105c272c56c4ab79f51b6576e633,
+      type: 3}

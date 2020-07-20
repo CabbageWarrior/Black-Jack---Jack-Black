@@ -40,7 +40,8 @@ namespace CabbageSoft.BlackJack.Characters
 
         private void Start()
         {
-            characterFaceInitialScale = characterFace.transform.localScale;
+            if (characterFace)
+                characterFaceInitialScale = characterFace.transform.localScale;
         }
 
         public void SetTriggerAction(ECharacterAction characterAction)
@@ -48,19 +49,19 @@ namespace CabbageSoft.BlackJack.Characters
             switch (characterAction)
             {
                 case ECharacterAction.AskCard:
-                    characterAnimator.SetTrigger(AnimProperty_AskCard);
+                    if (characterAnimator) characterAnimator.SetTrigger(AnimProperty_AskCard);
                     break;
                 case ECharacterAction.Stop:
-                    characterAnimator.SetTrigger(AnimProperty_Stop);
+                    if (characterAnimator) characterAnimator.SetTrigger(AnimProperty_Stop);
                     break;
                 case ECharacterAction.Busted:
-                    characterAnimator.SetTrigger(AnimProperty_Busted);
+                    if (characterAnimator) characterAnimator.SetTrigger(AnimProperty_Busted);
                     break;
                 case ECharacterAction.Win:
-                    characterAnimator.SetTrigger(AnimProperty_Win);
+                    if (characterAnimator) characterAnimator.SetTrigger(AnimProperty_Win);
                     break;
                 case ECharacterAction.Lose:
-                    characterAnimator.SetTrigger(AnimProperty_Lose);
+                    if (characterAnimator) characterAnimator.SetTrigger(AnimProperty_Lose);
                     break;
                 default:
                     break;
@@ -69,6 +70,8 @@ namespace CabbageSoft.BlackJack.Characters
 
         public void SetFaceSprite(Sprite sprite)
         {
+            if (!characterFace) return;
+
             if (!frontFaceSpriteRenderer)
                 frontFaceSpriteRenderer = characterFace.GetComponentInChildren<SpriteRenderer>();
 
@@ -80,6 +83,8 @@ namespace CabbageSoft.BlackJack.Characters
 
         public void SetFaceScale(bool bigger)
         {
+            if (!characterFace) return;
+
             if (faceSequence != null) faceSequence.Kill();
 
             if (bigger)
