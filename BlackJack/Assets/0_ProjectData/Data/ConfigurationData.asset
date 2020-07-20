@@ -35,6 +35,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cf36beabd84ec8f4f987a532f58988a2, type: 2}
   - {fileID: 11400000, guid: 10494082a1dcd8847a4d7759355cd07b, type: 2}
   - {fileID: 11400000, guid: caffb3effaa5bea4caffffa6ac3ded92, type: 2}
+  - {fileID: 11400000, guid: 34f9a0eb13e217441a8789db3e68a5d4, type: 2}
   - {fileID: 11400000, guid: e0906ea318844204f8d88333190133e3, type: 2}
   playersNumberMin: 1
   playersNumberMax: 7
