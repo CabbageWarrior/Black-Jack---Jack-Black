@@ -45,6 +45,9 @@ namespace CabbageSoft.BlackJack
         /// Reference to the Dealer.
         /// </summary>
         public PlayerDealer playerDealer;
+
+        [Space]
+        public Transform topPanelGroup;
         #endregion
 
         #region Private
@@ -96,7 +99,7 @@ namespace CabbageSoft.BlackJack
                 data = playersToInit[i];
                 currentPlayer = Instantiate(playerAIPrefab, PlayersAIGroup.transform);
                 currentPlayerAI = currentPlayer.GetComponent<PlayerAI>();
-                currentPlayerAI.Initialize(data);
+                currentPlayerAI.Initialize(this, data);
 
                 AIPlayers.Add(currentPlayerAI);
             }

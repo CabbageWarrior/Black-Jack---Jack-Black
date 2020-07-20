@@ -25,11 +25,14 @@ namespace CabbageSoft.BlackJack
         /// <summary>
         /// Reference to the DecisionCanvas.
         /// </summary>
-        public Canvas decisionCanvas;
+        public GameObject decisionCanvas;
         /// <summary>
         /// Reference to the CurrentDecisionText.
         /// </summary>
         public Text currentDecisionText;
+
+        [Space]
+        [SerializeField] private Transform panelToTopTransform = default;
         #endregion
 
         #region Private
@@ -44,7 +47,7 @@ namespace CabbageSoft.BlackJack
 
         #region Methods
         #region Public
-        public void Initialize(DataManager.PlayerAIInitData data)
+        public void Initialize(PlayersManager playersManager, DataManager.PlayerAIInitData data)
         {
             characterModelController = Instantiate(data.CharacterAIProperties.CharacterModelPrefab, modelPivotTransform);
 
@@ -56,6 +59,15 @@ namespace CabbageSoft.BlackJack
             nameText.text = playerName;
 
             characterModelController.SetFaceSprite(data.CharacterAIProperties.FrontFaceSprite);
+
+            if (panelToTopTransform)
+            {
+                panelToTopTransform.parent = playersManager.topPanelGroup;
+                
+                panelToTopTransform.localPosition = Vector3.zero;
+                panelToTopTransform.localRotation = Quaternion.identity;
+                panelToTopTransform.localScale = Vector3.one;
+            }
         }
 
         /// <summary>
@@ -109,7 +121,7 @@ namespace CabbageSoft.BlackJack
             }
             else
             {
-                decisionCanvas.gameObject.SetActive(true);
+                decisionCanvas.SetActive(true);
                 currentDecisionText.text = "Holy crap!";
                 HideDecisionPanelAfterSecs(2f);
             }
@@ -121,7 +133,7 @@ namespace CabbageSoft.BlackJack
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Stop);
 
-            decisionCanvas.gameObject.SetActive(true);
+            decisionCanvas.SetActive(true);
             currentDecisionText.text = "Ok, I'm done.";
             HideDecisionPanelAfterSecs(2f);
 
@@ -221,7 +233,7 @@ namespace CabbageSoft.BlackJack
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.AskCard);
 
-            decisionCanvas.gameObject.SetActive(true);
+            decisionCanvas.SetActive(true);
             currentDecisionText.text = "Gimme my card number " + (currentCards.Count + 1).ToString() + "!";
         }
         /// <summary>
@@ -230,7 +242,7 @@ namespace CabbageSoft.BlackJack
         private void SetHigher()
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Win);
-            decisionCanvas.gameObject.SetActive(true);
+            decisionCanvas.SetActive(true);
             currentDecisionText.text = "YEEEEEAH!";
             HideDecisionPanelAfterSecs(2f);
 
@@ -242,7 +254,7 @@ namespace CabbageSoft.BlackJack
         private void SetLower()
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Lose);
-            decisionCanvas.gameObject.SetActive(true);
+            decisionCanvas.SetActive(true);
             currentDecisionText.text = "Oh no!";
             HideDecisionPanelAfterSecs(2f);
 
@@ -269,7 +281,7 @@ namespace CabbageSoft.BlackJack
         {
             yield return new WaitForSeconds(secs);
 
-            decisionCanvas.gameObject.SetActive(false);
+            decisionCanvas.SetActive(false);
             currentDecisionText.text = string.Empty;
 
             yield return null;
