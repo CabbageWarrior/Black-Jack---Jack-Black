@@ -135,9 +135,8 @@ namespace CabbageSoft.BlackJack
                     (realPlayersDistanceAngle * i) - (realPlayersDistanceAngle * (AIPlayersCount - 1) / 2),
                     0f
                 );
-
-                playerAI.SetInfoCanvasRotation();
             }
+
             // Setting the delegate of the Dealer.
             playerDealer.OnFinish += CheckWinners;
 

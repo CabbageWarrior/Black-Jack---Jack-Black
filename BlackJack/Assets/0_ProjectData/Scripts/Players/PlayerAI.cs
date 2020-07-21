@@ -22,25 +22,12 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         [Range(0, 20)]
         public int minValueForRiskCalculation = 0;
-        /// <summary>
-        /// Reference to the DecisionCanvas.
-        /// </summary>
-        public GameObject decisionCanvas;
-        /// <summary>
-        /// Reference to the CurrentDecisionText.
-        /// </summary>
-        public Text currentDecisionText;
 
-        [Space]
-        [SerializeField] private Transform panelToTopTransform = default;
+        [SerializeField] private PlayerAIMatchInfoController playerAIMatchInfoControllerPrefab = default;
         #endregion
 
         #region Private
-        /// <summary>
-        /// Reference to the coroutines that manage the DecisionPanel.
-        /// </summary>
-        private Coroutine manageDecisionPanelCoroutine;
-
+        private PlayerAIMatchInfoController playerAIMatchInfoController = default;
         private CharacterModelController characterModelController = default;
         #endregion
         #endregion
@@ -49,6 +36,13 @@ namespace CabbageSoft.BlackJack
         #region Public
         public void Initialize(PlayersManager playersManager, DataManager.PlayerAIInitData data)
         {
+            playerAIMatchInfoController = Instantiate(playerAIMatchInfoControllerPrefab, playersManager.topPanelGroup);
+
+            nameText = playerAIMatchInfoController.NameText;
+            currentScoreText = playerAIMatchInfoController.CurrentScoreText;
+            currentSituationText = playerAIMatchInfoController.CurrentSituationText;
+            //////////////
+
             characterModelController = Instantiate(data.CharacterAIProperties.CharacterModelPrefab, modelPivotTransform);
 
             playerName = data.CharacterAIProperties.CharacterName;
@@ -59,24 +53,6 @@ namespace CabbageSoft.BlackJack
             nameText.text = playerName;
 
             characterModelController.SetFaceSprite(data.CharacterAIProperties.FrontFaceSprite);
-
-            if (panelToTopTransform)
-            {
-                panelToTopTransform.parent = playersManager.topPanelGroup;
-                
-                panelToTopTransform.localPosition = Vector3.zero;
-                panelToTopTransform.localRotation = Quaternion.identity;
-                panelToTopTransform.localScale = Vector3.one;
-            }
-        }
-
-        /// <summary>
-        /// Sets the rotation of InfoCanvas.
-        /// </summary>
-        public void SetInfoCanvasRotation()
-        {
-            // The canvas must be in the same direction of the Main Camera.
-            decisionCanvas.transform.rotation = Camera.main.transform.rotation;
         }
 
         /// <summary>
@@ -88,7 +64,7 @@ namespace CabbageSoft.BlackJack
             // Default ResetInfos functions...
             yield return StartCoroutine(base.ResetInfos());
 
-            HideDecisionPanelAfterSecs(0f);
+            playerAIMatchInfoController.ShowDialogue(string.Empty, 0f);
 
             yield return null;
         }
@@ -121,9 +97,7 @@ namespace CabbageSoft.BlackJack
             }
             else
             {
-                decisionCanvas.SetActive(true);
-                currentDecisionText.text = "Holy crap!";
-                HideDecisionPanelAfterSecs(2f);
+                playerAIMatchInfoController.ShowDialogue("Holy crap!", 2f);
             }
         }
         /// <summary>
@@ -133,9 +107,7 @@ namespace CabbageSoft.BlackJack
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Stop);
 
-            decisionCanvas.SetActive(true);
-            currentDecisionText.text = "Ok, I'm done.";
-            HideDecisionPanelAfterSecs(2f);
+            playerAIMatchInfoController.ShowDialogue("Ok, I'm done.", 2f);
 
             // Default Stop functions...
             base.Stop();
@@ -233,8 +205,7 @@ namespace CabbageSoft.BlackJack
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.AskCard);
 
-            decisionCanvas.SetActive(true);
-            currentDecisionText.text = "Gimme my card number " + (currentCards.Count + 1).ToString() + "!";
+            playerAIMatchInfoController.ShowDialogue($"Gimme my card number {currentCards.Count + 1}!", -1f);
         }
         /// <summary>
         /// Sets the player as a Winner.
@@ -242,9 +213,7 @@ namespace CabbageSoft.BlackJack
         private void SetHigher()
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Win);
-            decisionCanvas.SetActive(true);
-            currentDecisionText.text = "YEEEEEAH!";
-            HideDecisionPanelAfterSecs(2f);
+            playerAIMatchInfoController.ShowDialogue("YEEEEEAH!", 2f);
 
             currentSituationText.text = "Win!";
         }
@@ -254,37 +223,9 @@ namespace CabbageSoft.BlackJack
         private void SetLower()
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Lose);
-            decisionCanvas.SetActive(true);
-            currentDecisionText.text = "Oh no!";
-            HideDecisionPanelAfterSecs(2f);
+            playerAIMatchInfoController.ShowDialogue("Oh no!", 2f);
 
             currentSituationText.text = "Lose...";
-        }
-
-        /// <summary>
-        /// Hides the DecisionPanel after the seconds specified.
-        /// </summary>
-        /// <param name="secs">Seconds after which the panel disappears.</param>
-        private void HideDecisionPanelAfterSecs(float secs)
-        {
-            // If a coroutine is already in progress, the system stops it in order to avoid strange behaviours.
-            if (manageDecisionPanelCoroutine != null) StopCoroutine(manageDecisionPanelCoroutine);
-
-            manageDecisionPanelCoroutine = StartCoroutine(HideDecisionPanelAfterSecs_Coroutine(secs));
-        }
-        /// <summary>
-        /// Hides the DecisionPanel after the seconds specified.
-        /// </summary>
-        /// <param name="secs">Seconds after which the panel disappears.</param>
-        /// <returns>IEnumerator value.</returns>
-        private IEnumerator HideDecisionPanelAfterSecs_Coroutine(float secs)
-        {
-            yield return new WaitForSeconds(secs);
-
-            decisionCanvas.SetActive(false);
-            currentDecisionText.text = string.Empty;
-
-            yield return null;
         }
         #endregion
         #endregion
