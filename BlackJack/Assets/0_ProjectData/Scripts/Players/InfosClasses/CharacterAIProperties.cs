@@ -31,6 +31,13 @@ namespace CabbageSoft.BlackJack.Properties
         /// Character's Model Prefab.
         /// </summary>
         [SerializeField] protected CharacterModelController characterModelPrefab = default;
+
+        [Header("Character AI Properties")]
+        [SerializeField] protected string dialogueStringGiveCard = "Gimme my card number {0}!";
+        [SerializeField] protected string dialogueStringDone = "Ok, I'm done.!";
+        [SerializeField] protected string dialogueStringBusted = "Holy crap!";
+        [SerializeField] protected string dialogueStringMatchWon = "YEEEEEAH!";
+        [SerializeField] protected string dialogueStringMatchLost = "Oh no!";
         #endregion
 
         #region Properties
@@ -74,19 +81,45 @@ namespace CabbageSoft.BlackJack.Properties
             get => characterModelPrefab;
             set => characterModelPrefab = value;
         }
+
+        public string DialogueStringGiveCard
+        {
+            get { return dialogueStringGiveCard; }
+            set { dialogueStringGiveCard = value; }
+        }
+        public string DialogueStringDone
+        {
+            get { return dialogueStringDone; }
+            set { dialogueStringDone = value; }
+        }
+        public string DialogueStringBusted
+        {
+            get { return dialogueStringBusted; }
+            set { dialogueStringBusted = value; }
+        }
+        public string DialogueStringMatchWon
+        {
+            get { return dialogueStringMatchWon; }
+            set { dialogueStringMatchWon = value; }
+        }
+        public string DialogueStringMatchLost
+        {
+            get { return dialogueStringMatchLost; }
+            set { dialogueStringMatchLost = value; }
+        }
         #endregion
 
         public new CharacterAIProperties Clone()
-        {
-            CharacterAIProperties newCharacterAIProperties = new CharacterAIProperties();
-            newCharacterAIProperties.characterName = this.CharacterName;
-            newCharacterAIProperties.riskPercentage = this.RiskPercentage;
-            newCharacterAIProperties.riskCalcMinScore = this.RiskCalcMinScore;
-            newCharacterAIProperties.portraitSprite = this.PortraitSprite;
-            newCharacterAIProperties.frontFaceSprite = this.FrontFaceSprite;
-            newCharacterAIProperties.characterModelPrefab = this.CharacterModelPrefab;
+{
+    CharacterAIProperties newCharacterAIProperties = new CharacterAIProperties();
+    newCharacterAIProperties.characterName = this.CharacterName;
+    newCharacterAIProperties.riskPercentage = this.RiskPercentage;
+    newCharacterAIProperties.riskCalcMinScore = this.RiskCalcMinScore;
+    newCharacterAIProperties.portraitSprite = this.PortraitSprite;
+    newCharacterAIProperties.frontFaceSprite = this.FrontFaceSprite;
+    newCharacterAIProperties.characterModelPrefab = this.CharacterModelPrefab;
 
-            return newCharacterAIProperties;
-        }
+    return newCharacterAIProperties;
+}
     }
 }

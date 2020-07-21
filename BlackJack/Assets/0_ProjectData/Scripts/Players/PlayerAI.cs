@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using CabbageSoft.BlackJack.Characters;
 
 namespace CabbageSoft.BlackJack
@@ -27,6 +26,7 @@ namespace CabbageSoft.BlackJack
         #endregion
 
         #region Private
+        private DataManager.PlayerAIInitData playerAIData = default;
         private PlayerAIMatchInfoController playerAIMatchInfoController = default;
         private CharacterModelController characterModelController = default;
         #endregion
@@ -36,23 +36,27 @@ namespace CabbageSoft.BlackJack
         #region Public
         public void Initialize(PlayersManager playersManager, DataManager.PlayerAIInitData data)
         {
+            playerAIData = data;
+
+            // Initializing "playerAIMatchInfoController".
             playerAIMatchInfoController = Instantiate(playerAIMatchInfoControllerPrefab, playersManager.topPanelGroup);
 
             nameText = playerAIMatchInfoController.NameText;
             currentScoreText = playerAIMatchInfoController.CurrentScoreText;
             currentSituationText = playerAIMatchInfoController.CurrentSituationText;
-            //////////////
+            
+            // Initializing "characterModelController".
+            characterModelController = Instantiate(playerAIData.CharacterAIProperties.CharacterModelPrefab, modelPivotTransform);
 
-            characterModelController = Instantiate(data.CharacterAIProperties.CharacterModelPrefab, modelPivotTransform);
-
-            playerName = data.CharacterAIProperties.CharacterName;
-            percentageOfRisk = data.CharacterAIProperties.RiskPercentage;
-            minValueForRiskCalculation = data.CharacterAIProperties.RiskCalcMinScore;
+            // Populating variables from data.
+            playerName = playerAIData.CharacterAIProperties.CharacterName;
+            percentageOfRisk = playerAIData.CharacterAIProperties.RiskPercentage;
+            minValueForRiskCalculation = playerAIData.CharacterAIProperties.RiskCalcMinScore;
 
             // Visual update.
             nameText.text = playerName;
 
-            characterModelController.SetFaceSprite(data.CharacterAIProperties.FrontFaceSprite);
+            characterModelController.SetFaceSprite(playerAIData.CharacterAIProperties.FrontFaceSprite);
         }
 
         /// <summary>
@@ -62,11 +66,9 @@ namespace CabbageSoft.BlackJack
         public override IEnumerator ResetInfos()
         {
             // Default ResetInfos functions...
-            yield return StartCoroutine(base.ResetInfos());
+            yield return base.ResetInfos();
 
             playerAIMatchInfoController.ShowDialogue(string.Empty, 0f);
-
-            yield return null;
         }
         /// <summary>
         /// Sets the turn started for this player, invoking its events.
@@ -97,7 +99,7 @@ namespace CabbageSoft.BlackJack
             }
             else
             {
-                playerAIMatchInfoController.ShowDialogue("Holy crap!", 2f);
+                playerAIMatchInfoController.ShowDialogue(playerAIData.CharacterAIProperties.DialogueStringBusted, 2f);
             }
         }
         /// <summary>
@@ -107,7 +109,7 @@ namespace CabbageSoft.BlackJack
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Stop);
 
-            playerAIMatchInfoController.ShowDialogue("Ok, I'm done.", 2f);
+            playerAIMatchInfoController.ShowDialogue(playerAIData.CharacterAIProperties.DialogueStringDone, 2f);
 
             // Default Stop functions...
             base.Stop();
@@ -160,11 +162,20 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         protected override void Finish()
         {
+            currentState = State.Done;
+            
             // Resets the face's scale.
             characterModelController.SetFaceScale(false);
 
-            // Default Finish functions...
-            base.Finish();
+            StartCoroutine(Finish_Coroutine());
+
+            IEnumerator Finish_Coroutine()
+            {
+                yield return new WaitForSeconds(2f);
+
+                // Default Finish functions...
+                base.Finish();
+            }
         }
         #endregion
 
@@ -205,7 +216,7 @@ namespace CabbageSoft.BlackJack
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.AskCard);
 
-            playerAIMatchInfoController.ShowDialogue($"Gimme my card number {currentCards.Count + 1}!", -1f);
+            playerAIMatchInfoController.ShowDialogue(string.Format(playerAIData.CharacterAIProperties.DialogueStringGiveCard, currentCards.Count + 1), -1f);
         }
         /// <summary>
         /// Sets the player as a Winner.
@@ -213,7 +224,7 @@ namespace CabbageSoft.BlackJack
         private void SetHigher()
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Win);
-            playerAIMatchInfoController.ShowDialogue("YEEEEEAH!", 2f);
+            playerAIMatchInfoController.ShowDialogue(playerAIData.CharacterAIProperties.DialogueStringMatchWon, 2f);
 
             currentSituationText.text = "Win!";
         }
@@ -223,7 +234,7 @@ namespace CabbageSoft.BlackJack
         private void SetLower()
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Lose);
-            playerAIMatchInfoController.ShowDialogue("Oh no!", 2f);
+            playerAIMatchInfoController.ShowDialogue(playerAIData.CharacterAIProperties.DialogueStringMatchLost, 2f);
 
             currentSituationText.text = "Lose...";
         }

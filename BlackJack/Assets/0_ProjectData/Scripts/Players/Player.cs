@@ -262,9 +262,9 @@ namespace CabbageSoft.BlackJack
         {
             currentState = State.Done;
 
-            if (OnFinishTurn != null) OnFinishTurn.Invoke();
+            OnFinishTurn?.Invoke();
 
-            if (OnFinish != null) OnFinish();
+            OnFinish?.Invoke();
         }
         #endregion
         #endregion

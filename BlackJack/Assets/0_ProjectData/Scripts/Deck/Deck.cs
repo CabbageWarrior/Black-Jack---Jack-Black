@@ -451,6 +451,8 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         private void OnMouseUpAsButton_Event()
         {
+            if (PlayersManager.currentPlayer.CurrentState == Player.State.Done) return;
+
             if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
             if (cardsInDeck.Count <= 0) return;
 
@@ -476,6 +478,7 @@ namespace CabbageSoft.BlackJack
             PlayersManager.currentPlayer.GetCard(firstCard);
 
             yield return null;
+            if (PlayersManager.currentPlayer.CurrentState == Player.State.Done) yield return new WaitForSeconds(2f);
 
             if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
             SetManagingCards(false);
