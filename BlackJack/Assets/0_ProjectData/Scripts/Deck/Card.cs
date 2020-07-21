@@ -29,7 +29,7 @@ namespace CabbageSoft.BlackJack
         /// <summary>
         /// Suit of the card.
         /// </summary>
-        public Deck.Suit cardSuit;
+        public Deck.ESuit cardSuit;
         /// <summary>
         /// Card suit index.
         /// </summary>

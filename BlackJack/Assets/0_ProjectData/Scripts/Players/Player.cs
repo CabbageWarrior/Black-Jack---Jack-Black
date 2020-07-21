@@ -9,10 +9,22 @@ namespace CabbageSoft.BlackJack
 {
     public class Player : MonoBehaviour
     {
-        public enum State
+        public enum EState
         {
             WaitingForCard,
             Done
+        }
+
+        public enum EScoreSituation
+        {
+            Normal,
+            Soft,
+            BlackJack,
+            Stopped,
+            Busted,
+
+            Won,
+            Lost
         }
 
         #region Delegate Types
@@ -22,8 +34,7 @@ namespace CabbageSoft.BlackJack
         public delegate void OnFinishDelegate();
         #endregion
 
-        #region Properties
-        #region Public
+        #region Inspector Infos
         /// <summary>
         /// Player's name.
         /// </summary>
@@ -54,97 +65,99 @@ namespace CabbageSoft.BlackJack
         public OnFinishDelegate OnFinish = null;
         #endregion
 
-        #region Protected
-        /// <summary>
-        /// Current Score.
-        /// </summary>
-        protected int currentScore = 0;
-        /// <summary>
-        /// Current Score.
-        /// </summary>
-        public int CurrentScore
-        {
-            get
-            {
-                return currentScore;
-            }
-        }
+        #region Protected Stuff
         /// <summary>
         /// List of current Cards.
         /// </summary>
-        protected List<Card> currentCards;
+        protected List<Card> currentCards = new List<Card>();
         /// <summary>
         /// True if the player has a BlackJack, False otherwise.
         /// </summary>
         protected bool isBlackJack = false;
+        #endregion
+
+        #region Private Stuff
+        private EScoreSituation currentSituation = EScoreSituation.Normal;
+        #endregion
+
+        #region Properties
         /// <summary>
-        /// True if the player has busted, False otherwise.
+        /// Current Score.
         /// </summary>
-        protected bool isBusted = false;
+        public int CurrentScore { get; protected set; }
+
         /// <summary>
         /// Is the player Busted?
         /// </summary>
-        public bool IsBusted
-        {
-            get
-            {
-                return isBusted;
-            }
-        }
+        public bool IsBusted { get; protected set; } = false;
 
-        protected State currentState = State.WaitingForCard;
-        public State CurrentState
+        public EState CurrentState { get; protected set; } = EState.WaitingForCard;
+        public EScoreSituation CurrentSituation
         {
-            get
+            get => currentSituation; protected set
             {
-                return currentState;
+                currentSituation = value;
+
+                switch (currentSituation)
+                {
+                    case EScoreSituation.Normal:
+                        currentSituationText.text = "";
+                        break;
+                    case EScoreSituation.Soft:
+                        currentSituationText.text = "Soft";
+                        break;
+                    case EScoreSituation.BlackJack:
+                        currentSituationText.text = "JACK BLACK!";
+                        break;
+                    case EScoreSituation.Stopped:
+                        currentSituationText.text = "Stop.";
+                        break;
+                    case EScoreSituation.Busted:
+                        currentSituationText.text = "Busted!";
+                        break;
+                    case EScoreSituation.Won:
+                        currentSituationText.text = "Win!";
+                        break;
+                    case EScoreSituation.Lost:
+                        currentSituationText.text = "Lose...";
+                        break;
+                    default:
+                        break;
+                }
             }
         }
-        #endregion
         #endregion
 
         #region Events from Inspector
         /// <summary>
         /// Event to invoke when the turn starts.
         /// </summary>
-        public UnityEvent OnStartTurn;
+        public UnityEvent OnStartTurn = default;
         /// <summary>
         /// Event to invoke when the turn finishes.
         /// </summary>
-        public UnityEvent OnFinishTurn;
+        public UnityEvent OnFinishTurn = default;
         #endregion
 
-        #region Methods
-        #region MonoBehaviour Methods
-        /// <summary>
-        /// Component Awake Method.
-        /// </summary>
-        private void Awake()
-        {
-            // Initializing currentCards.
-            currentCards = new List<Card>();
-        }
-        #endregion
-
-        #region Public
+        #region Public Methods
         /// <summary>
         /// Resets the player's infos and sends its cards back to the Deck.
         /// </summary>
         /// <returns>IEnumerator value.</returns>
         public virtual IEnumerator ResetInfos()
         {
-            currentScore = 0;
-            isBusted = false;
+            CurrentScore = 0;
+            IsBusted = false;
             isBlackJack = false;
-            currentState = State.WaitingForCard;
+            CurrentState = EState.WaitingForCard;
+            CurrentSituation = EScoreSituation.Normal;
 
             // Sends back the cards.
             yield return StartCoroutine(GameManager.StaticDeckRef.ReaddCards_Coroutine(currentCards));
 
             currentCards.Clear();
 
-            currentScoreText.text = "0";
-            currentSituationText.text = "";
+            currentScoreText.text = CurrentScore.ToString();
 
             yield return null;
         }
@@ -153,7 +166,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         public virtual void StartTurn()
         {
-            if (OnStartTurn != null) OnStartTurn.Invoke();
+            OnStartTurn?.Invoke();
         }
         /// <summary>
         /// Makes the player get the card.
@@ -174,13 +187,13 @@ namespace CabbageSoft.BlackJack
             }
 
             // Setting special situations...
-            if (newScore == GameManager.BlackJackPoints && currentCards.Count < 3)
+            if (newScore == GameManager.BlackJackPoints && currentCards.Count == 2)
             {
                 isBlackJack = true;
             }
             else if (newScore > GameManager.BlackJackPoints)
             {
-                currentSituationText.text = "Soft";
+                CurrentSituation = EScoreSituation.Soft;
 
                 // If there are cards with a secondary value different from the first, check if the player doesn't bust using that.
                 // The system checks the secondary value one card ad a time, in order to avoid wrong behaviours in case di multiple aces.
@@ -203,15 +216,15 @@ namespace CabbageSoft.BlackJack
                 }
             }
 
-            currentScore = newScore;
+            CurrentScore = newScore;
 
-            currentScoreText.text = currentScore.ToString();
+            currentScoreText.text = CurrentScore.ToString();
 
             // Set the correct position to the card.
             SetCardPosition(card);
 
             // Check if the player busted anyway.
-            if (currentScore > GameManager.BlackJackPoints)
+            if (CurrentScore > GameManager.BlackJackPoints)
             {
                 Bust();
             }
@@ -223,18 +236,18 @@ namespace CabbageSoft.BlackJack
         {
             if (isBlackJack)
             {
-                currentSituationText.text = "JACK BLACK!";
+                CurrentSituation = EScoreSituation.BlackJack;
             }
             else
             {
-                currentSituationText.text = "Stop.";
+                CurrentSituation = EScoreSituation.Stopped;
             }
 
             Finish();
         }
         #endregion
 
-        #region Protected
+        #region Protected Methods
         /// <summary>
         /// Sets the new position to the card.
         /// </summary>
@@ -250,9 +263,9 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         protected virtual void Bust()
         {
-            currentSituationText.text = "Busted!";
+            CurrentSituation = EScoreSituation.Busted;
 
-            isBusted = true;
+            IsBusted = true;
             Finish();
         }
         /// <summary>
@@ -260,13 +273,12 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         protected virtual void Finish()
         {
-            currentState = State.Done;
+            CurrentState = EState.Done;
 
             OnFinishTurn?.Invoke();
 
             OnFinish?.Invoke();
         }
-        #endregion
         #endregion
     }
 }

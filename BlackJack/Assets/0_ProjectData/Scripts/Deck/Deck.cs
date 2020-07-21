@@ -10,7 +10,7 @@ namespace CabbageSoft.BlackJack
     public class Deck : MonoBehaviour
     {
         #region Enums
-        public enum Suit
+        public enum ESuit
         {
             Hearts = 0,
             Diamonds = 1,
@@ -19,8 +19,7 @@ namespace CabbageSoft.BlackJack
         }
         #endregion
 
-        #region Properties
-        #region Public
+        #region Inspector Infos
         /// <summary>
         /// Reference to the Card Prefab.
         /// </summary>
@@ -65,7 +64,7 @@ namespace CabbageSoft.BlackJack
         public Card firstCard = null;
         #endregion
 
-        #region Private
+        #region Private Stuff
         /// <summary>
         /// List of all the cards.
         /// </summary>
@@ -83,8 +82,7 @@ namespace CabbageSoft.BlackJack
         /// <summary>
         /// Sort order of suits when reorganizing cards.
         /// </summary>
-        private List<Deck.Suit> suitOrder = new List<Suit>();
-        #endregion
+        private List<ESuit> suitOrder = new List<ESuit>();
         #endregion
 
         #region Events from Inspector
@@ -98,8 +96,7 @@ namespace CabbageSoft.BlackJack
         public UnityEvent OnManagingCardsEnd;
         #endregion
 
-        #region Methods
-        #region MonoBehaviour Methods
+        #region UnityEvents
         /// <summary>
         /// Component Start method.
         /// </summary>
@@ -115,28 +112,28 @@ namespace CabbageSoft.BlackJack
             while (!(heartsSortManaged && diamondsSortManaged && clubsSortManaged && spadesSortManaged))
             {
                 int tmpMinSortNumber = 5;
-                Deck.Suit tmpMinSuit = Deck.Suit.Hearts; // Only for initialization.
+                ESuit tmpMinSuit = ESuit.Hearts; // Only for initialization.
 
                 // Finding the current minimum sorting value.
                 if (!heartsSortManaged && heartsSortPosition < tmpMinSortNumber)
                 {
                     tmpMinSortNumber = heartsSortPosition;
-                    tmpMinSuit = Deck.Suit.Hearts;
+                    tmpMinSuit = ESuit.Hearts;
                 }
                 if (!diamondsSortManaged && diamondsSortPosition < tmpMinSortNumber)
                 {
                     tmpMinSortNumber = diamondsSortPosition;
-                    tmpMinSuit = Deck.Suit.Diamonds;
+                    tmpMinSuit = ESuit.Diamonds;
                 }
                 if (!clubsSortManaged && clubsSortPosition < tmpMinSortNumber)
                 {
                     tmpMinSortNumber = clubsSortPosition;
-                    tmpMinSuit = Deck.Suit.Clubs;
+                    tmpMinSuit = ESuit.Clubs;
                 }
                 if (!spadesSortManaged && spadesSortPosition < tmpMinSortNumber)
                 {
                     tmpMinSortNumber = spadesSortPosition;
-                    tmpMinSuit = Deck.Suit.Spades;
+                    tmpMinSuit = ESuit.Spades;
                 }
 
                 // Adding suit to the sorting list.
@@ -145,16 +142,16 @@ namespace CabbageSoft.BlackJack
                 // Checking which suit has been used.
                 switch (tmpMinSuit)
                 {
-                    case Deck.Suit.Hearts:
+                    case ESuit.Hearts:
                         heartsSortManaged = true;
                         break;
-                    case Deck.Suit.Diamonds:
+                    case ESuit.Diamonds:
                         diamondsSortManaged = true;
                         break;
-                    case Deck.Suit.Clubs:
+                    case ESuit.Clubs:
                         clubsSortManaged = true;
                         break;
-                    case Deck.Suit.Spades:
+                    case ESuit.Spades:
                         spadesSortManaged = true;
                         break;
                 }
@@ -162,10 +159,13 @@ namespace CabbageSoft.BlackJack
 
             // Need to spawn the 52 cards.
             SpawnCards();
+
+            // Reorder cards based on given suit order.
+            ReorderCardsBySuit();
         }
         #endregion
 
-        #region Public
+        #region Public Methods
         /// <summary>
         /// Shuffles the cards that are currently into the deck.
         /// </summary>
@@ -174,59 +174,56 @@ namespace CabbageSoft.BlackJack
             if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
 
             StartCoroutine(ShuffleCardsInDeck_Coroutine());
-        }
-        /// <summary>
-        /// Manages the deck shuffle.
-        /// </summary>
-        /// <returns>IEnumerator value.</returns>
-        private IEnumerator ShuffleCardsInDeck_Coroutine()
-        {
-            SetManagingCards(true);
-            deckHighlighter.SetActive(false);
 
-            // For each card, the shuffle method swaps it with another random card that is part of the deck.
-            int n = cardsInDeck.Count;
-            int k;
-            Transform cardTransform;
-            Card temp;
-            if (n > 0)
+            IEnumerator ShuffleCardsInDeck_Coroutine()
             {
-                while (n > 1)
+                SetManagingCards(true);
+                deckHighlighter.SetActive(false);
+
+                // For each card, the shuffle method swaps it with another random card that is part of the deck.
+                int n = cardsInDeck.Count;
+                int k;
+                Transform cardTransform;
+                Card temp;
+                if (n > 0)
                 {
-                    n--;
+                    while (n > 1)
+                    {
+                        n--;
 
-                    cardTransform = cardsInDeck[n].transform;
+                        cardTransform = cardsInDeck[n].transform;
 
-                    // Make a "shuffle visual effect" moving cards on axis X and Z.
-                    Sequence mySequenceX = DOTween.Sequence();
-                    mySequenceX
-                        .Append(cardTransform.DOMoveX(transform.position.x + Random.Range(-.2f, .2f), .2f))
-                        .Append(cardTransform.DOMoveX(transform.position.x, .2f));
-                    Sequence mySequenceZ = DOTween.Sequence();
-                    mySequenceZ
-                        .Append(cardTransform.DOMoveZ(transform.position.z + Random.Range(-.2f, .2f), .2f))
-                        .Append(cardTransform.DOMoveZ(transform.position.z, .2f));
+                        // Make a "shuffle visual effect" moving cards on axis X and Z.
+                        Sequence mySequenceX = DOTween.Sequence();
+                        mySequenceX
+                            .Append(cardTransform.DOMoveX(transform.position.x + Random.Range(-.2f, .2f), .2f))
+                            .Append(cardTransform.DOMoveX(transform.position.x, .2f));
+                        Sequence mySequenceZ = DOTween.Sequence();
+                        mySequenceZ
+                            .Append(cardTransform.DOMoveZ(transform.position.z + Random.Range(-.2f, .2f), .2f))
+                            .Append(cardTransform.DOMoveZ(transform.position.z, .2f));
 
-                    // Selecting the random index with which make the swap.
-                    k = Random.Range(0, cardsInDeck.Count);
+                        // Selecting the random index with which make the swap.
+                        k = Random.Range(0, cardsInDeck.Count);
 
-                    // Swapping cards.
-                    temp = cardsInDeck[k];
-                    cardsInDeck[k] = cardsInDeck[n];
-                    cardsInDeck[n] = temp;
+                        // Swapping cards.
+                        temp = cardsInDeck[k];
+                        cardsInDeck[k] = cardsInDeck[n];
+                        cardsInDeck[n] = temp;
+                    }
+
+                    // Reorder the Y positions.
+                    SetCardsPositionByOrder();
+
+                    // Reset the first card reference after the shuffle.
+                    ResetFirstCard();
                 }
 
-                // Reorder the Y positions.
-                SetCardsPositionByOrder();
+                if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
+                SetManagingCards(false);
 
-                // Reset the first card reference after the shuffle.
-                ResetFirstCard();
+                yield return null;
             }
-
-            if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
-            SetManagingCards(false);
-
-            yield return null;
         }
 
         /// <summary>
@@ -237,45 +234,41 @@ namespace CabbageSoft.BlackJack
             if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
 
             StartCoroutine(ReorderCardsBySuit_Coroutine());
-        }
-        /// <summary>
-        /// Manages the deck sort.
-        /// </summary>
-        /// <returns>IEnumerator value.</returns>
-        private IEnumerator ReorderCardsBySuit_Coroutine()
-        {
-            SetManagingCards(true);
-            deckHighlighter.SetActive(false);
 
-            // For each card, the shuffle method swaps it with another random card that is part of the deck.
-            int n = cardsInDeck.Count;
-            List<Card> newDeckOrder;
-            if (n > 0)
+            IEnumerator ReorderCardsBySuit_Coroutine()
             {
-                newDeckOrder = new List<Card>();
+                SetManagingCards(true);
+                deckHighlighter.SetActive(false);
 
-                for (int i = 0; i < suitOrder.Count; i++)
+                int n = cardsInDeck.Count;
+                List<Card> newDeckOrder;
+                if (n > 0)
                 {
-                    newDeckOrder.AddRange(cardsInDeck
-                        .FindAll(x => x.cardSuit == suitOrder[i])
-                        .OrderBy(x => x.cardSuitIndex)
-                        .ToList()
-                    );
+                    newDeckOrder = new List<Card>();
+
+                    for (int i = 0; i < suitOrder.Count; i++)
+                    {
+                        newDeckOrder.AddRange(cardsInDeck
+                            .FindAll(x => x.cardSuit == suitOrder[i])
+                            .OrderBy(x => x.cardSuitIndex)
+                            .ToList()
+                        );
+                    }
+
+                    cardsInDeck = newDeckOrder;
+
+                    // Reorder the Y positions.
+                    SetCardsPositionByOrder();
+
+                    // Reset the first card reference after the shuffle.
+                    ResetFirstCard();
                 }
 
-                cardsInDeck = newDeckOrder;
+                if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
+                SetManagingCards(false);
 
-                // Reorder the Y positions.
-                SetCardsPositionByOrder();
-
-                // Reset the first card reference after the shuffle.
-                ResetFirstCard();
+                yield return null;
             }
-
-            if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
-            SetManagingCards(false);
-
-            yield return null;
         }
 
         /// <summary>
@@ -379,7 +372,7 @@ namespace CabbageSoft.BlackJack
         }
         #endregion
 
-        #region Private
+        #region Private Methods
         /// <summary>
         /// Spawns the 52 cards and assigns their single values.
         /// </summary>
@@ -405,7 +398,7 @@ namespace CabbageSoft.BlackJack
                 newCard.OnUsed += ResetFirstCard;
 
                 // Check the suit of the card based on the Deck.Suit enumerator.
-                newCard.cardSuit = (Suit)Mathf.Floor(i / 13);
+                newCard.cardSuit = (ESuit)Mathf.Floor(i / 13);
 
                 // Check the index for the single suit.
                 suitIndex = i % 13;
@@ -451,7 +444,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         private void OnMouseUpAsButton_Event()
         {
-            if (PlayersManager.currentPlayer.CurrentState == Player.State.Done) return;
+            if (PlayersManager.currentPlayer.CurrentState == Player.EState.Done) return;
 
             if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
             if (cardsInDeck.Count <= 0) return;
@@ -478,7 +471,7 @@ namespace CabbageSoft.BlackJack
             PlayersManager.currentPlayer.GetCard(firstCard);
 
             yield return null;
-            if (PlayersManager.currentPlayer.CurrentState == Player.State.Done) yield return new WaitForSeconds(2f);
+            if (PlayersManager.currentPlayer.CurrentState == Player.EState.Done) yield return new WaitForSeconds(2f);
 
             if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
             SetManagingCards(false);
@@ -508,7 +501,6 @@ namespace CabbageSoft.BlackJack
                 ResetFirstCard();
             }
         }
-        #endregion
         #endregion
     }
 }

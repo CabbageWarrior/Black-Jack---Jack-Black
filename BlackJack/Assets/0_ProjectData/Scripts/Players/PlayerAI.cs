@@ -6,8 +6,7 @@ namespace CabbageSoft.BlackJack
 {
     public class PlayerAI : Player
     {
-        #region Properties
-        #region Public
+        #region Inspector Infos
         public Transform modelPivotTransform = default;
 
         /// <summary>
@@ -25,15 +24,13 @@ namespace CabbageSoft.BlackJack
         [SerializeField] private PlayerAIMatchInfoController playerAIMatchInfoControllerPrefab = default;
         #endregion
 
-        #region Private
+        #region Private Stuff
         private DataManager.PlayerAIInitData playerAIData = default;
         private PlayerAIMatchInfoController playerAIMatchInfoController = default;
         private CharacterModelController characterModelController = default;
         #endregion
-        #endregion
 
-        #region Methods
-        #region Public
+        #region Public Methods
         public void Initialize(PlayersManager playersManager, DataManager.PlayerAIInitData data)
         {
             playerAIData = data;
@@ -93,7 +90,7 @@ namespace CabbageSoft.BlackJack
             base.GetCard(card);
 
             // Check the new situation and decide what to do.
-            if (!isBusted)
+            if (!IsBusted)
             {
                 MakeDecision();
             }
@@ -124,18 +121,18 @@ namespace CabbageSoft.BlackJack
             /* The player wins in these cases:
              * 1) The player has a BlackJack and the Dealer doesn't.
              * 2) The player's current score is higher than the Dealer's.
-             * 3) The Dealer has busted.
+             * 3) The Dealer has busted and the player hasn't.
              */
 
             // If the player is busted, it doesn't check the score.
-            if (isBusted) return;
+            if (IsBusted) return;
 
             if (isDealerBlackJack)
             {
                 // If the dealer has a BlackJack, the player has lost the turn.
                 SetLower();
             }
-            else if (isBlackJack || currentScore > dealerScore || dealerScore > GameManager.BlackJackPoints)
+            else if (isBlackJack || CurrentScore > dealerScore || dealerScore > GameManager.BlackJackPoints)
             {
                 SetHigher();
             }
@@ -146,7 +143,7 @@ namespace CabbageSoft.BlackJack
         }
         #endregion
 
-        #region Protected
+        #region Protected Methods
         /// <summary>
         /// Makes the player bust.
         /// </summary>
@@ -162,7 +159,7 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         protected override void Finish()
         {
-            currentState = State.Done;
+            CurrentState = EState.Done;
             
             // Resets the face's scale.
             characterModelController.SetFaceScale(false);
@@ -179,21 +176,21 @@ namespace CabbageSoft.BlackJack
         }
         #endregion
 
-        #region Private
+        #region Private Methods
         /// <summary>
         /// Manages the player's decisions.
         /// </summary>
         private void MakeDecision()
         {
             // If has a BlackJack, the player stops.
-            if (currentScore == GameManager.BlackJackPoints)
+            if (CurrentScore == GameManager.BlackJackPoints)
             {
                 Stop();
                 return;
             }
 
             // If has not reached the minimum score for risk calculation, the player asks one more card.
-            if (currentScore < minValueForRiskCalculation)
+            if (CurrentScore < minValueForRiskCalculation)
             {
                 AskCard();
                 return;
@@ -225,8 +222,8 @@ namespace CabbageSoft.BlackJack
         {
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Win);
             playerAIMatchInfoController.ShowDialogue(playerAIData.CharacterAIProperties.DialogueStringMatchWon, 2f);
-
-            currentSituationText.text = "Win!";
+            
+            CurrentSituation = EScoreSituation.Won;
         }
         /// <summary>
         /// Sets the player as a Loser.
@@ -236,9 +233,8 @@ namespace CabbageSoft.BlackJack
             characterModelController.SetTriggerAction(CharacterModelController.ECharacterAction.Lose);
             playerAIMatchInfoController.ShowDialogue(playerAIData.CharacterAIProperties.DialogueStringMatchLost, 2f);
 
-            currentSituationText.text = "Lose...";
+            CurrentSituation = EScoreSituation.Lost;
         }
-        #endregion
         #endregion
     }
 }

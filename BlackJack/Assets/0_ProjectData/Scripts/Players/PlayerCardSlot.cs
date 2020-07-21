@@ -17,7 +17,7 @@ namespace CabbageSoft.BlackJack
 
         private void OnTriggerStay(Collider other)
         {
-            if (player.CurrentState == Player.State.WaitingForCard)
+            if (player.CurrentState == Player.EState.WaitingForCard)
             {
                 if (other.CompareTag("ValidCard"))
                 {

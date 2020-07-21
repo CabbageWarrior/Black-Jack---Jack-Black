@@ -22,8 +22,7 @@ namespace CabbageSoft.BlackJack
         private static int currentPlayerIndex = 0;
         #endregion
 
-        #region Properties
-        #region Public
+        #region Inspector Infos
         /// <summary>
         /// Maximum angle of distance between players.
         /// </summary>
@@ -50,7 +49,7 @@ namespace CabbageSoft.BlackJack
         public Transform topPanelGroup;
         #endregion
 
-        #region Private
+        #region Private Stuff
         /// <summary>
         /// List of AI Players.
         /// </summary>
@@ -60,10 +59,8 @@ namespace CabbageSoft.BlackJack
         /// </summary>
         private GameManager gameManager;
         #endregion
-        #endregion
 
-        #region Methods
-        #region Public
+        #region Public Methods
         /// <summary>
         /// Gets the AI Players List.
         /// </summary>
@@ -197,7 +194,7 @@ namespace CabbageSoft.BlackJack
         }
         #endregion
 
-        #region Private
+        #region Private Methods
         /// <summary>
         /// Sets the next player as the current player.
         /// </summary>
@@ -219,7 +216,7 @@ namespace CabbageSoft.BlackJack
                     currentPlayer.StartTurn();
                     break;
                 case DataManager.CardSendingType.DragAndDrop:
-                    if (AIPlayers.Find(x => x.CurrentState == Player.State.WaitingForCard) == null)
+                    if (AIPlayers.Find(x => x.CurrentState == Player.EState.WaitingForCard) == null)
                     {
                         playerDealer.StartTurn();
                     }
@@ -229,7 +226,6 @@ namespace CabbageSoft.BlackJack
                     break;
             }
         }
-        #endregion
         #endregion
     }
 }
