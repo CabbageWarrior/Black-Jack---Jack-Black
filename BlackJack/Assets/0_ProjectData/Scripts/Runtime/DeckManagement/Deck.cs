@@ -10,6 +10,9 @@ namespace CabbageSoft.BlackJack.DeckManagement
     public class Deck : MonoBehaviour
     {
         #region Enums
+        /// <summary>
+        /// Card Suit.
+        /// </summary>
         public enum ESuit
         {
             Hearts = 0,
@@ -23,49 +26,52 @@ namespace CabbageSoft.BlackJack.DeckManagement
         /// <summary>
         /// Reference to the Card Prefab.
         /// </summary>
-        public Card cardPrefab;
+        [SerializeField] private Card cardPrefab = default;
         /// <summary>
         /// Collection of sprites of the single cards.
         /// </summary>
-        public Sprite[] cardFaces = default;
+        [SerializeField] private Sprite[] cardFaces = default;
         /// <summary>
         /// Offset amount for cards in deck.
         /// </summary>
-        public float cardOffset = 0f;
+        [SerializeField] private float cardOffset = 0f;
 
         /// <summary>
         /// Heatrs position when reordering.
         /// </summary>
         [Space]
         [Range(1, 4)]
-        public int heartsSortPosition = 1;
+        [SerializeField] private int heartsSortPosition = 1;
         /// <summary>
         /// Diamonds position when reordering.
         /// </summary>
         [Range(1, 4)]
-        public int diamondsSortPosition = 2;
+        [SerializeField] private int diamondsSortPosition = 2;
         /// <summary>
         /// Clubs position when reordering.
         /// </summary>
         [Range(1, 4)]
-        public int clubsSortPosition = 3;
+        [SerializeField] private int clubsSortPosition = 3;
         /// <summary>
         /// Spades position when reordering.
         /// </summary>
         [Range(1, 4)]
-        public int spadesSortPosition = 4;
+        [SerializeField] private int spadesSortPosition = 4;
 
         /// <summary>
         /// GameObject that highlights the deck when it can be clicked.
         /// </summary>
         [Space]
-        public GameObject deckHighlighter;
+        [SerializeField] private GameObject deckHighlighter = default;
 
         /// <summary>
-        /// Reference to the current first card of the deck.
+        /// What happens when the deck starts to manage cards.
         /// </summary>
-        [Space]
-        public Card firstCard = null;
+        public UnityEvent OnManagingCardsStart = default;
+        /// <summary>
+        /// What happens when the deck finishes to manage cards.
+        /// </summary>
+        public UnityEvent OnManagingCardsEnd = default;
         #endregion
 
         #region Private Stuff
@@ -76,7 +82,7 @@ namespace CabbageSoft.BlackJack.DeckManagement
         /// <summary>
         /// List of all the cards currentlyin the deck.
         /// </summary>
-        private List<Card> cardsInDeck;
+        private List<Card> cardsInDeck = new List<Card>();
 
         /// <summary>
         /// Is the deck managing cards right now?
@@ -87,79 +93,26 @@ namespace CabbageSoft.BlackJack.DeckManagement
         /// Sort order of suits when reorganizing cards.
         /// </summary>
         private List<ESuit> suitOrder = new List<ESuit>();
+
+        /// <summary>
+        /// Reference to the current first card of the deck.
+        /// </summary>
+        private Card firstCard = null;
         #endregion
 
-        #region Events from Inspector
+        #region Properies
         /// <summary>
-        /// What happens when the deck starts to manage cards.
+        /// GameObject that highlights the deck when it can be clicked.
         /// </summary>
-        public UnityEvent OnManagingCardsStart;
-        /// <summary>
-        /// What happens when the deck finishes to manage cards.
-        /// </summary>
-        public UnityEvent OnManagingCardsEnd;
+        public GameObject DeckHighlighter => deckHighlighter;
         #endregion
 
         #region UnityEvents
-        /// <summary>
-        /// Component Start method.
-        /// </summary>
+        /// <inheritdoc/>
         private void Start()
         {
             // Initializing the sorting order.
-
-            bool heartsSortManaged = false;
-            bool diamondsSortManaged = false;
-            bool clubsSortManaged = false;
-            bool spadesSortManaged = false;
-
-            while (!(heartsSortManaged && diamondsSortManaged && clubsSortManaged && spadesSortManaged))
-            {
-                int tmpMinSortNumber = 5;
-                ESuit tmpMinSuit = ESuit.Hearts; // Only for initialization.
-
-                // Finding the current minimum sorting value.
-                if (!heartsSortManaged && heartsSortPosition < tmpMinSortNumber)
-                {
-                    tmpMinSortNumber = heartsSortPosition;
-                    tmpMinSuit = ESuit.Hearts;
-                }
-                if (!diamondsSortManaged && diamondsSortPosition < tmpMinSortNumber)
-                {
-                    tmpMinSortNumber = diamondsSortPosition;
-                    tmpMinSuit = ESuit.Diamonds;
-                }
-                if (!clubsSortManaged && clubsSortPosition < tmpMinSortNumber)
-                {
-                    tmpMinSortNumber = clubsSortPosition;
-                    tmpMinSuit = ESuit.Clubs;
-                }
-                if (!spadesSortManaged && spadesSortPosition < tmpMinSortNumber)
-                {
-                    tmpMinSortNumber = spadesSortPosition;
-                    tmpMinSuit = ESuit.Spades;
-                }
-
-                // Adding suit to the sorting list.
-                suitOrder.Add(tmpMinSuit);
-
-                // Checking which suit has been used.
-                switch (tmpMinSuit)
-                {
-                    case ESuit.Hearts:
-                        heartsSortManaged = true;
-                        break;
-                    case ESuit.Diamonds:
-                        diamondsSortManaged = true;
-                        break;
-                    case ESuit.Clubs:
-                        clubsSortManaged = true;
-                        break;
-                    case ESuit.Spades:
-                        spadesSortManaged = true;
-                        break;
-                }
-            }
+            SetupSortingOrder();
 
             // Need to spawn the 52 cards.
             SpawnCards();
@@ -378,6 +331,67 @@ namespace CabbageSoft.BlackJack.DeckManagement
 
         #region Private Methods
         /// <summary>
+        /// Initializes the sorting order.
+        /// </summary>
+        private void SetupSortingOrder()
+        {
+            // Initializing the sorting order.
+
+            bool heartsSortManaged = false;
+            bool diamondsSortManaged = false;
+            bool clubsSortManaged = false;
+            bool spadesSortManaged = false;
+
+            while (!(heartsSortManaged && diamondsSortManaged && clubsSortManaged && spadesSortManaged))
+            {
+                int tmpMinSortNumber = 5;
+                ESuit tmpMinSuit = ESuit.Hearts; // Only for initialization.
+
+                // Finding the current minimum sorting value.
+                if (!heartsSortManaged && heartsSortPosition < tmpMinSortNumber)
+                {
+                    tmpMinSortNumber = heartsSortPosition;
+                    tmpMinSuit = ESuit.Hearts;
+                }
+                if (!diamondsSortManaged && diamondsSortPosition < tmpMinSortNumber)
+                {
+                    tmpMinSortNumber = diamondsSortPosition;
+                    tmpMinSuit = ESuit.Diamonds;
+                }
+                if (!clubsSortManaged && clubsSortPosition < tmpMinSortNumber)
+                {
+                    tmpMinSortNumber = clubsSortPosition;
+                    tmpMinSuit = ESuit.Clubs;
+                }
+                if (!spadesSortManaged && spadesSortPosition < tmpMinSortNumber)
+                {
+                    tmpMinSortNumber = spadesSortPosition;
+                    tmpMinSuit = ESuit.Spades;
+                }
+
+                // Adding suit to the sorting list.
+                suitOrder.Add(tmpMinSuit);
+
+                // Checking which suit has been used.
+                switch (tmpMinSuit)
+                {
+                    case ESuit.Hearts:
+                        heartsSortManaged = true;
+                        break;
+                    case ESuit.Diamonds:
+                        diamondsSortManaged = true;
+                        break;
+                    case ESuit.Clubs:
+                        clubsSortManaged = true;
+                        break;
+                    case ESuit.Spades:
+                        spadesSortManaged = true;
+                        break;
+                }
+            }
+        }
+
+        /// <summary>
         /// Spawns the 52 cards and assigns their single values.
         /// </summary>
         private void SpawnCards()
@@ -395,7 +409,7 @@ namespace CabbageSoft.BlackJack.DeckManagement
                 newCard = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
 
                 // Initializes its values.
-                newCard.Initialize(i, (ESuit)Mathf.Floor(i / 13), i % 13, cardFaces[i], ResetFirstCard);
+                newCard.Initialize(this, i, (ESuit)Mathf.Floor(i / 13), i % 13, cardFaces[i], ResetFirstCard);
 
                 // Hide the face.
                 newCard.Toggle(false, false);
@@ -423,36 +437,35 @@ namespace CabbageSoft.BlackJack.DeckManagement
         {
             if (PlayersManager.currentPlayer.CurrentState == Player.EState.Done) return;
 
-            if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
+            if (isManagingCards) return;
+            if (GameManager.currentState != GameManager.TurnState.Game) return;
             if (cardsInDeck.Count <= 0) return;
 
             // If the operation hasn't been blocked, start the real objects management.
             StartCoroutine(OnMouseUpAsButton_Coroutine());
-        }
-        /// <summary>
-        /// Manages the OnMouseUpAsButton event actions.
-        /// </summary>
-        /// <returns>IEnumerator value.</returns>
-        private IEnumerator OnMouseUpAsButton_Coroutine()
-        {
-            SetManagingCards(true);
-            deckHighlighter.SetActive(false);
 
-            // Toggles the first card.
-            firstCard.Toggle(true);
+            IEnumerator OnMouseUpAsButton_Coroutine()
+            {
+                SetManagingCards(true);
+                deckHighlighter.SetActive(false);
 
-            yield return new WaitForSeconds(1);
+                // Toggles the first card.
+                firstCard.Toggle(true);
 
-            // The current player gets the first card, that is removed from the deck and marked as "Used".
-            cardsInDeck.Remove(firstCard);
-            PlayersManager.currentPlayer.GetCard(firstCard);
+                yield return new WaitForSeconds(1);
 
-            yield return null;
-            if (PlayersManager.currentPlayer.CurrentState == Player.EState.Done) yield return new WaitForSeconds(2f);
+                // The current player gets the first card, that is removed from the deck and marked as "Used".
+                cardsInDeck.Remove(firstCard);
+                PlayersManager.currentPlayer.GetCard(firstCard);
 
-            if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
-            SetManagingCards(false);
-            yield return null;
+                yield return null;
+
+                if (PlayersManager.currentPlayer.CurrentState == Player.EState.Done) yield return new WaitForSeconds(2f);
+
+                if (GameManager.currentState == GameManager.TurnState.Game) deckHighlighter.SetActive(true);
+                SetManagingCards(false);
+                yield return null;
+            }
         }
 
         /// <summary>

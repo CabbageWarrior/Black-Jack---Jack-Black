@@ -8,7 +8,7 @@ namespace CabbageSoft.BlackJack.DeckManagement
     {
         public override void OnInspectorGUI()
         {
-            DrawDefaultInspector();
+            base.OnInspectorGUI();
 
             Card myCard = (Card)target;
             if (GUILayout.Button("Show"))

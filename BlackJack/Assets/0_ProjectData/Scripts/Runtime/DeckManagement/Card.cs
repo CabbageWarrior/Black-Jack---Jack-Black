@@ -27,6 +27,11 @@ namespace CabbageSoft.BlackJack.DeckManagement
         private Rigidbody cardRigidbody;
 
         private Coroutine flightCoroutine;
+
+        private Deck deck = default;
+
+        private Quaternion cardShownQuaternion = Quaternion.Euler(90, 180, 180);
+        private Quaternion cardHiddenQuaternion = Quaternion.Euler(270, 0, 180);
         #endregion
 
         #region Properties
@@ -92,6 +97,7 @@ namespace CabbageSoft.BlackJack.DeckManagement
         /// <param name="p_cardSuitIndex">Card suit index (0 to 12).</param>
         /// <param name="p_OnUsedCallback">Callback called on card use.</param>
         public void Initialize(
+            Deck p_deck,
             int p_cardIndex,
             Deck.ESuit p_cardSuit,
             int p_cardSuitIndex,
@@ -104,6 +110,7 @@ namespace CabbageSoft.BlackJack.DeckManagement
             cardRigidbody = GetComponent<Rigidbody>();
 
             // Parameters
+            deck = p_deck;
             CardIndex = p_cardIndex;
             CardSuit = p_cardSuit;
             CardSuitIndex = p_cardSuitIndex;
@@ -145,12 +152,12 @@ namespace CabbageSoft.BlackJack.DeckManagement
             if (showCard)
             {
                 toggleDuration = .5f;
-                newAngle = Quaternion.Euler(90, 180, 180);
+                newAngle = cardShownQuaternion;
             }
             else
             {
                 toggleDuration = .1f;
-                newAngle = Quaternion.Euler(270, 0, 180);
+                newAngle = cardHiddenQuaternion;
             }
 
             // Set new card position with or without animation.
@@ -280,8 +287,8 @@ namespace CabbageSoft.BlackJack.DeckManagement
         public void DragStop()
         {
             IsDragging = false;
-            if (GameManager.currentState == GameManager.TurnState.Game) GameManager.StaticDeckRef.deckHighlighter.SetActive(true);
-            GameManager.StaticDeckRef.SetManagingCards(false);
+            if (GameManager.currentState == GameManager.TurnState.Game) deck.DeckHighlighter.SetActive(true);
+            deck.SetManagingCards(false);
         }
 
         /// <summary>
@@ -302,14 +309,14 @@ namespace CabbageSoft.BlackJack.DeckManagement
         {
             ResetState();
             transform
-                .DOMove(GameManager.StaticDeckRef.ReaddCardPosition(), .3f)
+                .DOMove(deck.ReaddCardPosition(), .3f)
                 .OnComplete(ReturnIntoDeck_Callback);
 
             void ReturnIntoDeck_Callback()
             {
-                GameManager.StaticDeckRef.AddCard(this);
-                GameManager.StaticDeckRef.SetCardsPositionByOrder();
-                GameManager.StaticDeckRef.ResetFirstCard();
+                deck.AddCard(this);
+                deck.SetCardsPositionByOrder();
+                deck.ResetFirstCard();
             }
         }
         #endregion
