@@ -1,9 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
+﻿using UnityEditor;
 using UnityEngine;
 
-namespace CabbageSoft.BlackJack
+namespace CabbageSoft.BlackJack.DeckManagement
 {
     [CustomEditor(typeof(Card))]
     public class CardEditor : Editor

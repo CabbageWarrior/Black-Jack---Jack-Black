@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using DG.Tweening;
+using CabbageSoft.BlackJack.DeckManagement;
 
 namespace CabbageSoft.BlackJack
 {

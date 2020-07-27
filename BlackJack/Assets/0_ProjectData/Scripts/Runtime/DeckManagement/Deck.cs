@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using DG.Tweening;
 
-namespace CabbageSoft.BlackJack
+namespace CabbageSoft.BlackJack.DeckManagement
 {
     public class Deck : MonoBehaviour
     {
@@ -23,7 +23,11 @@ namespace CabbageSoft.BlackJack
         /// <summary>
         /// Reference to the Card Prefab.
         /// </summary>
-        public GameObject cardPrefab;
+        public Card cardPrefab;
+        /// <summary>
+        /// Collection of sprites of the single cards.
+        /// </summary>
+        public Sprite[] cardFaces = default;
         /// <summary>
         /// Offset amount for cards in deck.
         /// </summary>
@@ -249,8 +253,8 @@ namespace CabbageSoft.BlackJack
                     for (int i = 0; i < suitOrder.Count; i++)
                     {
                         newDeckOrder.AddRange(cardsInDeck
-                            .FindAll(x => x.cardSuit == suitOrder[i])
-                            .OrderBy(x => x.cardSuitIndex)
+                            .FindAll(x => x.CardSuit == suitOrder[i])
+                            .OrderBy(x => x.CardSuitIndex)
                             .ToList()
                         );
                     }
@@ -383,42 +387,15 @@ namespace CabbageSoft.BlackJack
             // Cards List initialization.
             allCards.Clear();
 
-            GameObject newCardGO;
             Card newCard;
-            int suitIndex;
             // Cards go from 2 to 11/1.
             for (int i = 0; i < 52; i++)
             {
-                newCardGO = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
+                // Instantiates the card.
+                newCard = Instantiate(cardPrefab, Vector3.zero, Quaternion.identity);
 
-                newCard = newCardGO.GetComponent<Card>();
-                newCard.cardIndex = i;
-
-                // Initialize the callback.
-                newCard.OnUsed += ResetFirstCard;
-
-                // Check the suit of the card based on the Deck.Suit enumerator.
-                newCard.cardSuit = (ESuit)Mathf.Floor(i / 13);
-
-                // Check the index for the single suit.
-                suitIndex = i % 13;
-                newCard.cardSuitIndex = suitIndex;
-
-                if (suitIndex < 9) // Numbers 2-10
-                {
-                    newCard.cardPrimaryScoreValue = suitIndex + 2;
-                    newCard.cardSecondaryScoreValue = suitIndex + 2;
-                }
-                else if (suitIndex < 12) // Figures
-                {
-                    newCard.cardPrimaryScoreValue = 10;
-                    newCard.cardSecondaryScoreValue = 10;
-                }
-                else // Ace (11/1)
-                {
-                    newCard.cardPrimaryScoreValue = 11;
-                    newCard.cardSecondaryScoreValue = 1;
-                }
+                // Initializes its values.
+                newCard.Initialize(i, (ESuit)Mathf.Floor(i / 13), i % 13, cardFaces[i], ResetFirstCard);
 
                 // Hide the face.
                 newCard.Toggle(false, false);

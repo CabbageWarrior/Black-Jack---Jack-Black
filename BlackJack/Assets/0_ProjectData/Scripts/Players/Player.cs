@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
 using DG.Tweening;
+using CabbageSoft.BlackJack.DeckManagement;
 
 namespace CabbageSoft.BlackJack
 {
@@ -183,7 +184,7 @@ namespace CabbageSoft.BlackJack
             int newScore = 0;
             foreach (Card c in currentCards)
             {
-                newScore += c.cardPrimaryScoreValue;
+                newScore += c.CardPrimaryScoreValue;
             }
 
             // Setting special situations...
@@ -206,11 +207,11 @@ namespace CabbageSoft.BlackJack
 
                         if (j <= i)
                         {
-                            newScore += c.cardSecondaryScoreValue;
+                            newScore += c.CardSecondaryScoreValue;
                         }
                         else
                         {
-                            newScore += c.cardPrimaryScoreValue;
+                            newScore += c.CardPrimaryScoreValue;
                         }
                     }
                 }
