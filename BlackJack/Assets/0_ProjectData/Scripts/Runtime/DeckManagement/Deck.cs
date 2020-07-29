@@ -188,7 +188,8 @@ namespace CabbageSoft.BlackJack.DeckManagement
         /// </summary>
         public void ReorderCardsBySuit()
         {
-            if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
+            //if (isManagingCards || GameManager.currentState != GameManager.TurnState.Game) return;
+            if (isManagingCards) return;
 
             StartCoroutine(ReorderCardsBySuit_Coroutine());
 

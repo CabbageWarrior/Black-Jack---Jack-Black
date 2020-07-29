@@ -277,17 +277,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 1078905614}
-        m_MethodName: ReorderCardsBySuit
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   OnSetStateEnd:
     m_PersistentCalls:
       m_Calls:
@@ -2098,7 +2087,6 @@ MonoBehaviour:
   clubsSortPosition: 1
   spadesSortPosition: 4
   deckHighlighter: {fileID: 760364667}
-  firstCard: {fileID: 0}
   OnManagingCardsStart:
     m_PersistentCalls:
       m_Calls: []
